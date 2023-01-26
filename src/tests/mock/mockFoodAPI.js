@@ -777,6 +777,7 @@ export const FOODS = {
   ],
 };
 
+// Busca realizada busca pela palavra chave "TACO"
 export const FILTERED_BY_NAME_FOODS = {
   meals: [
     {
@@ -892,6 +893,7 @@ export const FILTERED_BY_NAME_FOODS = {
   ],
 };
 
+// Busca realizada busca pela palavra chave "Y"
 export const FILTERED_BY_LETTER_FOODS = {
   meals: [
     {
@@ -952,6 +954,7 @@ export const FILTERED_BY_LETTER_FOODS = {
   ],
 };
 
+// Busca realizada busca pela palavra chave "SALMON"
 export const FILTERED_BY_INGREDIENT_FOODS = {
   meals: [
     {

@@ -698,6 +698,7 @@ export const DRINKS = {
   ],
 };
 
+// Busca realizada busca pela palavra chave "RUM"
 export const FILTERED_BY_NAME_DRINKS = {
   drinks: [
     {
@@ -809,6 +810,7 @@ export const FILTERED_BY_NAME_DRINKS = {
   ],
 };
 
+// Busca realizada busca pela palavra chave "Y"
 export const FILTERED_BY_LETTER_DRINKS = {
   drinks: [
     {
@@ -920,6 +922,7 @@ export const FILTERED_BY_LETTER_DRINKS = {
   ],
 };
 
+// Busca realizada busca pela palavra chave "RUM"
 export const FILTERED_BY_INGREDIENT_DRINKS = {
   drinks: [
     {
@@ -958,7 +961,7 @@ export const FILTERED_BY_INGREDIENT_DRINKS = {
       idDrink: '178331',
     },
     {
-      strDrink: 'Captain Kidd\'s Punch',
+      strDrink: 'Captain Kidd`s Punch',
       strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/d83spj1596017390.jpg',
       idDrink: '178329',
     },
