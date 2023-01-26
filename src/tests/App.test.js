@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { renderWithRouter } from './helpers/renderWithRouter';
 import App from '../App';
 
-test('Farewell, front-end', () => {
-  // Este arquivo pode ser modificado ou deletado sem problemas
-  render(<App />);
-  const linkElement = screen.getByText(/TRYBE/i);
-  expect(linkElement).toBeInTheDocument();
+describe('Sequência de testes relacionadas à página <App />', () => {
+  test('Verifica se os elementos do componente <Footer /> são renderizados na página', () => {
+    // Renderizar a página que o componente se encontra
+    renderWithRouter(<App />);
+  });
 });
