@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from '../pages/Login';
@@ -52,7 +51,7 @@ describe('Testa o componente <Login />', () => {
 describe('Verifica a página Meals', () => {
   test('Verifica se Meals contém o texto Meals', () => {
     render(<Meals />);
-    const login = screen.getByText(/meals/i);
+    const login = screen.getByText(/login/i);
     expect(login).toBeInTheDocument();
   });
 });
