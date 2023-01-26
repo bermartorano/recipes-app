@@ -9,8 +9,8 @@ describe('Sequência de testes relacionadas à página <App />', () => {
 
     // Capturar os elementos da tela
     const captureFooter = screen.getByTestId(/footer/);
-    const captureDrinkImg = screen.getByRole('img', { name: 'Drink icon' });
-    const captureMealImg = screen.getByRole('img', { name: 'Meals icon' });
+    const captureDrinkImg = screen.getByTestId(/drinks-bottom-btn/);
+    const captureMealImg = screen.getByTestId(/meals-bottom-btn/);
 
     // Verificar os valores, a existência, etc desses elementos da tela
     expect(captureFooter).toBeInTheDocument();
