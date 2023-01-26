@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
+import '../Footer.css';
 
 function Footer() {
   return (
@@ -17,7 +18,7 @@ function Footer() {
       <Link to="/meals">
         <object
           title="Meal"
-          data={ mealIcon }
+          src={ mealIcon }
           type="image/svg+xml"
           data-testid="meals-bottom-btn"
         />
