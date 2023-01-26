@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 export default function SearchBar() {
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: 'teste',
+    searchFilter: '',
   });
 
   const handleChange = ({ target }) => {
@@ -33,7 +34,7 @@ export default function SearchBar() {
           type="radio"
           data-testid="ingredient-search-radio"
           value="ingredient"
-          name="apiSearch"
+          name="searchFilter"
           onClick={ handleChange }
         />
         <p>Ingrediente</p>
@@ -41,7 +42,7 @@ export default function SearchBar() {
           type="radio"
           data-testid="name-search-radio"
           value="name"
-          name="apiSearch"
+          name="searchFilter"
           onClick={ handleChange }
         />
         <p>Nome</p>
@@ -49,7 +50,7 @@ export default function SearchBar() {
           type="radio"
           data-testid="first-letter-search-radio"
           value="firstLetter"
-          name="apiSearch"
+          name="searchFilter"
           onClick={ handleChange }
         />
         <p>Primeira Letra</p>
