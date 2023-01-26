@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
-import { Profile, Meals, Drinks, Login, FavoritesRecipes, DoneRecipes } from './services/pagesExports'
+import { Profile, Meals, Drinks, Login, FavoritesRecipes, DoneRecipes, NotFound } from './services/pagesExports'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
