@@ -3,7 +3,7 @@ import { Footer } from '../services/componentsExport';
 
 function Meals() {
   return (
-      <Footer />
+    <Footer />
   );
 }
 

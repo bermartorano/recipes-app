@@ -3,7 +3,7 @@ import { Footer } from '../services/componentsExport';
 
 function Profile() {
   return (
-      <Footer />
+    <Footer />
   );
 }
 

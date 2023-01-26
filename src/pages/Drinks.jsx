@@ -3,7 +3,7 @@ import { Footer } from '../services/componentsExport';
 
 function Drinks() {
   return (
-      <Footer />
+    <Footer />
   );
 }
 
