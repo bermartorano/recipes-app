@@ -4,15 +4,15 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import RecepiesProvider from './context/RecepiesProvider';
+import RecipesProvider from './context/RecipesProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <BrowserRouter>
-      <RecepiesProvider>
+      <RecipesProvider>
         <App />
-      </RecepiesProvider>
+      </RecipesProvider>
     </BrowserRouter>,
   );
 
