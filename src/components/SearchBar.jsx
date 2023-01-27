@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
+import { infoFoodRequest } from '../services/foodAPI';
+import { infoDrinkRequest } from '../services/drinkAPI';
+import { RecepiesContext } from '../context/RecepiesProvider';
 
-export default function SearchBar() {
+export default function SearchBar(props) {
+  const { titleToFetch } = props;
+  const { setRecepies } = useContext(RecepiesContext);
   const [searchInfo, setSearchInfo] = useState({
-    searchBarInput: 'teste',
+    searchBarInput: '',
     searchFilter: '',
   });
 
@@ -12,6 +18,31 @@ export default function SearchBar() {
       ...searchInfo,
       [name]: value,
     });
+  };
+
+  const handleClick = async () => {
+    const { searchBarInput, searchFilter } = searchInfo;
+    switch (titleToFetch) {
+    case 'Meals': {
+      const mealsFetched = await infoFoodRequest({
+        key: searchFilter,
+        search: searchBarInput,
+      });
+      setRecepies(mealsFetched);
+    }
+      break;
+
+    case 'Drinks': {
+      const drinksFetched = await infoDrinkRequest({
+        key: searchFilter,
+        search: searchBarInput,
+      });
+      setRecepies(drinksFetched);
+    }
+      break;
+    default:
+      break;
+    }
   };
 
   return (
@@ -26,6 +57,7 @@ export default function SearchBar() {
       <button
         data-testid="exec-search-btn"
         type="button"
+        onClick={ handleClick }
       >
         procurar
       </button>
@@ -58,3 +90,7 @@ export default function SearchBar() {
     </div>
   );
 }
+
+SearchBar.propTypes = {
+  titleToFetch: PropTypes.string.isRequired,
+};

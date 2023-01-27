@@ -4,6 +4,7 @@ import './index.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import RecepiesProvider from './context/RecepiesProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
@@ -11,7 +12,9 @@ ReactDOM
     <BrowserRouter>
       <Switch>
         <Route>
-          <App />
+          <RecepiesProvider>
+            <App />
+          </RecepiesProvider>
         </Route>
       </Switch>
     </BrowserRouter>,

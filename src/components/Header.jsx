@@ -11,7 +11,7 @@ function Header(props) {
   const history = useHistory();
 
   const handleProfileClick = () => {
-    history.push({ pathname: '/profile' });
+    history.push('/profile');
   };
 
   const handleSearchIconClick = () => {
@@ -20,7 +20,7 @@ function Header(props) {
 
   return (
     <div>
-      { showSearchBar && <SearchBar />}
+      { showSearchBar && <SearchBar titleToFetch={ title } />}
       <ProfileIcon onClick={ handleProfileClick } data-testid="profile-top-btn" />
       { hasSearchIcon && (
         <SearchIcon onClick={ handleSearchIconClick } data-testid="search-top-btn" />)}
