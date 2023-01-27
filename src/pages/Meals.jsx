@@ -1,9 +1,12 @@
 import React from 'react';
-import { Footer } from '../services/componentsExport';
+import { Footer, Header } from '../services/componentsExport';
 
 function Meals() {
   return (
-    <Footer />
+    <>
+      <Header title="Meals" hasSearchIcon />
+      <Footer />
+    </>
   );
 }
 

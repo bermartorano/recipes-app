@@ -1,8 +1,9 @@
 import React from 'react';
+import { Header } from '../services/componentsExport';
 
 function DoneRecipes() {
   return (
-    <div>DoneRecipes</div>
+    <Header title="Done Recipes" hasSearchIcon={ false } />
   );
 }
 
