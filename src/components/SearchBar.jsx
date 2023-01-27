@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
-import { RecepiesContext } from '../context/RecepiesProvider';
+import { RecipesContext } from '../context/RecipesProvider';
 
 export default function SearchBar(props) {
   const { titleToFetch } = props;
-  const { setRecepies } = useContext(RecepiesContext);
+  const { setRecipes } = useContext(RecipesContext);
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: '',
     searchFilter: '',
@@ -28,7 +28,7 @@ export default function SearchBar(props) {
         key: searchFilter,
         search: searchBarInput,
       });
-      setRecepies(mealsFetched);
+      setRecipes(mealsFetched);
     }
       break;
 
@@ -37,7 +37,7 @@ export default function SearchBar(props) {
         key: searchFilter,
         search: searchBarInput,
       });
-      setRecepies(drinksFetched);
+      setRecipes(drinksFetched);
     }
       break;
     default:
