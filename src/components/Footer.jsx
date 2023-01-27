@@ -8,20 +8,10 @@ function Footer() {
   return (
     <footer className="footer" data-testid="footer">
       <Link to="/drinks">
-        <object
-          title="Drink"
-          src={ drinkIcon }
-          type="image/svg+xml"
-          data-testid="drinks-bottom-btn"
-        />
+        <img src={ drinkIcon } alt="drink-page" data-testid="drinks-bottom-btn" />
       </Link>
       <Link to="/meals">
-        <object
-          title="Meal"
-          src={ mealIcon }
-          type="image/svg+xml"
-          data-testid="meals-bottom-btn"
-        />
+        <img src={ mealIcon } alt="meal-page" data-testid="meals-bottom-btn" />
       </Link>
     </footer>
   );
