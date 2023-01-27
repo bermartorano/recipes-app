@@ -957,7 +957,53 @@ export const FILTERED_BY_INGREDIENT_DRINKS = {
   ],
 };
 
-export const FILTERED_BY_INGREDIENT_DRINKS_ID = {
+export const ALL_CATEGORIES_DRINKS = {
+  drinks: [
+    {
+      strCategory: ORDINARY_DRINK,
+    },
+    {
+      strCategory: 'Cocktail',
+    },
+    {
+      strCategory: 'Shake',
+    },
+    {
+      strCategory: 'Other / Unknown',
+    },
+    {
+      strCategory: 'Cocoa',
+    },
+    {
+      strCategory: 'Shot',
+    },
+    {
+      strCategory: COFFEE_TEA,
+    },
+    {
+      strCategory: 'Homemade Liqueur',
+    },
+    {
+      strCategory: 'Punch / Party Drink',
+    },
+    {
+      strCategory: 'Beer',
+    },
+    {
+      strCategory: 'Soft Drink',
+    },
+  ],
+};
+
+export const OPTIONS_DRINK_API = {
+  all: DRINKS,
+  name: FILTERED_BY_NAME_DRINKS,
+  firstLetter: FILTERED_BY_LETTER_DRINKS,
+  ingredients: FILTERED_BY_INGREDIENT_DRINKS,
+  categories: ALL_CATEGORIES_DRINKS,
+};
+
+export const ID_14560 = {
   drinks: [
     {
       idDrink: '14560',
@@ -1012,6 +1058,11 @@ export const FILTERED_BY_INGREDIENT_DRINKS_ID = {
       strCreativeCommonsConfirmed: 'No',
       dateModified: '2016-08-31 19:53:20',
     },
+  ],
+};
+
+export const ID_11028 = {
+  drinks: [
     {
       idDrink: '11028',
       strDrink: 'Amaretto Stinger',
@@ -1065,6 +1116,11 @@ export const FILTERED_BY_INGREDIENT_DRINKS_ID = {
       strCreativeCommonsConfirmed: 'No',
       dateModified: '2017-04-24 22:38:54',
     },
+  ],
+};
+
+export const ID_17193 = {
+  drinks: [
     {
       idDrink: '17193',
       strDrink: 'Stinger',
@@ -1118,6 +1174,12 @@ export const FILTERED_BY_INGREDIENT_DRINKS_ID = {
       strCreativeCommonsConfirmed: 'No',
       dateModified: '2017-09-02 12:40:33',
     },
+  ],
+
+};
+
+export const ID_14842 = {
+  drinks: [
     {
       idDrink: '14842',
       strDrink: 'Midnight Mint',
@@ -1171,6 +1233,11 @@ export const FILTERED_BY_INGREDIENT_DRINKS_ID = {
       strCreativeCommonsConfirmed: 'No',
       dateModified: '2015-09-02 16:38:30',
     },
+  ],
+};
+
+export const ID_15328 = {
+  drinks: [
     {
       idDrink: '15328',
       strDrink: 'Zorro',
@@ -1224,52 +1291,13 @@ export const FILTERED_BY_INGREDIENT_DRINKS_ID = {
       strCreativeCommonsConfirmed: 'No',
       dateModified: '2017-01-28 16:34:43',
     },
-
   ],
 };
 
-export const ALL_CATEGORIES_DRINKS = {
-  drinks: [
-    {
-      strCategory: ORDINARY_DRINK,
-    },
-    {
-      strCategory: 'Cocktail',
-    },
-    {
-      strCategory: 'Shake',
-    },
-    {
-      strCategory: 'Other / Unknown',
-    },
-    {
-      strCategory: 'Cocoa',
-    },
-    {
-      strCategory: 'Shot',
-    },
-    {
-      strCategory: COFFEE_TEA,
-    },
-    {
-      strCategory: 'Homemade Liqueur',
-    },
-    {
-      strCategory: 'Punch / Party Drink',
-    },
-    {
-      strCategory: 'Beer',
-    },
-    {
-      strCategory: 'Soft Drink',
-    },
-  ],
-};
-
-export const OPTIONS_DRINK_API = {
-  all: DRINKS,
-  name: FILTERED_BY_NAME_DRINKS,
-  firstLetter: FILTERED_BY_LETTER_DRINKS,
-  ingredients: FILTERED_BY_INGREDIENT_DRINKS,
-  categories: ALL_CATEGORIES_DRINKS,
+export const INGREDIENTS_DRINKS_IDS = {
+  14560: ID_14560,
+  11028: ID_11028,
+  17193: ID_17193,
+  14842: ID_14842,
+  15328: ID_15328,
 };

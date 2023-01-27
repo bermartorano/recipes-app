@@ -987,7 +987,62 @@ export const FILTERED_BY_INGREDIENT_FOODS = {
   ],
 };
 
-export const FILTERED_BY_INGREDIENT_FOODS_ID = {
+export const ALL_CATEGORIES_FOODS = {
+  meals: [
+    {
+      strCategory: 'Beef',
+    },
+    {
+      strCategory: 'Breakfast',
+    },
+    {
+      strCategory: 'Chicken',
+    },
+    {
+      strCategory: 'Dessert',
+    },
+    {
+      strCategory: 'Goat',
+    },
+    {
+      strCategory: 'Lamb',
+    },
+    {
+      strCategory: 'Miscellaneous',
+    },
+    {
+      strCategory: 'Pasta',
+    },
+    {
+      strCategory: 'Pork',
+    },
+    {
+      strCategory: 'Seafood',
+    },
+    {
+      strCategory: 'Side',
+    },
+    {
+      strCategory: 'Starter',
+    },
+    {
+      strCategory: 'Vegan',
+    },
+    {
+      strCategory: 'Vegetarian',
+    },
+  ],
+};
+
+export const OPTIONS_FOOD_API = {
+  all: FOODS,
+  name: FILTERED_BY_NAME_FOODS,
+  firstLetter: FILTERED_BY_LETTER_FOODS,
+  ingredients: FILTERED_BY_INGREDIENT_FOODS,
+  categories: ALL_CATEGORIES_FOODS,
+};
+
+export const ID_52959 = {
   meals: [
     {
       idMeal: '52959',
@@ -1044,6 +1099,11 @@ export const FILTERED_BY_INGREDIENT_FOODS_ID = {
       strCreativeCommonsConfirmed: null,
       dateModified: null,
     },
+  ],
+};
+
+export const ID_52773 = {
+  meals: [
     {
       idMeal: '52773',
       strMeal: 'Honey Teriyaki Salmon',
@@ -1099,6 +1159,11 @@ export const FILTERED_BY_INGREDIENT_FOODS_ID = {
       strCreativeCommonsConfirmed: null,
       dateModified: null,
     },
+  ],
+};
+
+export const ID_52960 = {
+  meals: [
     {
       idMeal: '52960',
       strMeal: 'Salmon Avocado Salad',
@@ -1154,6 +1219,11 @@ export const FILTERED_BY_INGREDIENT_FOODS_ID = {
       strCreativeCommonsConfirmed: null,
       dateModified: null,
     },
+  ],
+};
+
+export const ID_52882 = {
+  meals: [
     {
       idMeal: '52882',
       strMeal: 'Three Fish Pie',
@@ -1209,6 +1279,11 @@ export const FILTERED_BY_INGREDIENT_FOODS_ID = {
       strCreativeCommonsConfirmed: null,
       dateModified: null,
     },
+  ],
+};
+
+export const ID_52823 = {
+  meals: [
     {
       idMeal: '52823',
       strMeal: 'Salmon Prawn Risotto',
@@ -1267,57 +1342,10 @@ export const FILTERED_BY_INGREDIENT_FOODS_ID = {
   ],
 };
 
-export const ALL_CATEGORIES_FOODS = {
-  meals: [
-    {
-      strCategory: 'Beef',
-    },
-    {
-      strCategory: 'Breakfast',
-    },
-    {
-      strCategory: 'Chicken',
-    },
-    {
-      strCategory: 'Dessert',
-    },
-    {
-      strCategory: 'Goat',
-    },
-    {
-      strCategory: 'Lamb',
-    },
-    {
-      strCategory: 'Miscellaneous',
-    },
-    {
-      strCategory: 'Pasta',
-    },
-    {
-      strCategory: 'Pork',
-    },
-    {
-      strCategory: 'Seafood',
-    },
-    {
-      strCategory: 'Side',
-    },
-    {
-      strCategory: 'Starter',
-    },
-    {
-      strCategory: 'Vegan',
-    },
-    {
-      strCategory: 'Vegetarian',
-    },
-  ],
-};
-
-export const OPTIONS_FOOD_API = {
-  all: FOODS,
-  name: FILTERED_BY_NAME_FOODS,
-  firstLetter: FILTERED_BY_LETTER_FOODS,
-  ingredients: FILTERED_BY_INGREDIENT_FOODS,
-  categories: ALL_CATEGORIES_FOODS,
+export const INGREDIENTS_FOODS_IDS = {
+  52959: ID_52959,
+  52773: ID_52773,
+  52960: ID_52960,
+  52882: ID_52882,
+  52823: ID_52823,
 };

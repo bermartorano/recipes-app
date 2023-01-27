@@ -1,8 +1,14 @@
 import { DRINKS, FILTERED_BY_NAME_DRINKS, FILTERED_BY_LETTER_DRINKS,
-  FILTERED_BY_INGREDIENT_DRINKS, ALL_CATEGORIES_DRINKS } from './mockDrinkAPI';
+  FILTERED_BY_INGREDIENT_DRINKS, INGREDIENTS_DRINKS_IDS, ALL_CATEGORIES_DRINKS } from './mockDrinkAPI';
 
 import { FILTERED_BY_INGREDIENT_FOODS, FILTERED_BY_LETTER_FOODS,
-  FILTERED_BY_NAME_FOODS, ALL_CATEGORIES_FOODS, FOODS } from './mockFoodAPI';
+  FILTERED_BY_NAME_FOODS, INGREDIENTS_FOODS_IDS, ALL_CATEGORIES_FOODS, FOODS } from './mockFoodAPI';
+
+function verifyKey(url, checkerObject) {
+  const key = Object.keys(checkerObject)
+    .find((keyNumber) => `${url}${keyNumber}` === url);
+  return INGREDIENTS_DRINKS_IDS[key];
+}
 
 function urlChecker(url) {
   const defaultUrl = {
@@ -21,19 +27,25 @@ function urlChecker(url) {
   case url === `${defaultUrl.food}list.php?c=list`:
     return ALL_CATEGORIES_FOODS;
 
-  case url.starsWith(`${defaultUrl.drink}search.php?s=`):
-    return FILTERED_BY_NAME_DRINKS;
-  case url.starsWith(`${defaultUrl.drink}search.php?f=`):
-    return FILTERED_BY_LETTER_DRINKS;
+  case url.starsWith(`${defaultUrl.drink}lookup.php?i=`):
+    return verifyKey(url, INGREDIENTS_DRINKS_IDS);
+  case url.starsWith(`${defaultUrl.food}lookup.php?i=`):
+    return verifyKey(url, INGREDIENTS_FOODS_IDS);
+
   case url.starsWith(`${defaultUrl.drink}filter.php?i=`):
     return FILTERED_BY_INGREDIENT_DRINKS;
-
-  case url.starsWith(`${defaultUrl.food}search.php?s=`):
-    return FILTERED_BY_NAME_FOODS;
-  case url.starsWith(`${defaultUrl.food}search.php?f=`):
-    return FILTERED_BY_LETTER_FOODS;
   case url.starsWith(`${defaultUrl.food}filter.php?i=`):
     return FILTERED_BY_INGREDIENT_FOODS;
+
+  case url.starsWith(`${defaultUrl.drink}search.php?s=`):
+    return FILTERED_BY_NAME_DRINKS;
+  case url.starsWith(`${defaultUrl.food}search.php?s=`):
+    return FILTERED_BY_NAME_FOODS;
+
+  case url.starsWith(`${defaultUrl.food}search.php?f=`):
+    return FILTERED_BY_LETTER_FOODS;
+  case url.starsWith(`${defaultUrl.drink}search.php?f=`):
+    return FILTERED_BY_LETTER_DRINKS;
 
   default:
     return { error: 'invalid URL ' };
