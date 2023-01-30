@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
@@ -6,11 +7,12 @@ import { RecepiesContext } from '../context/RecepiesProvider';
 
 export default function SearchBar(props) {
   const { titleToFetch } = props;
-  const { setRecepies } = useContext(RecepiesContext);
+  const { setRecepies, recepies } = useContext(RecepiesContext);
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: '',
     searchFilter: '',
   });
+  const history = useHistory();
 
   const handleChange = ({ target }) => {
     const { value, name } = target;
@@ -20,14 +22,33 @@ export default function SearchBar(props) {
     });
   };
 
+  useEffect(() => {
+    const sliceLimit = -1;
+    const pageName = `${titleToFetch.toLowerCase()}`;
+    const titleToFetchWithoutLastCharacter = titleToFetch.slice(0, sliceLimit);
+    const { [pageName]: recipesKey } = recepies;
+    const [recipe] = recipesKey;
+    if (recipesKey.length === 1) {
+      history.push(`/${pageName}/${recipe[`id${titleToFetchWithoutLastCharacter}`]}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recepies]);
+
   const handleClick = async () => {
     const { searchBarInput, searchFilter } = searchInfo;
+    if (searchFilter === 'firstLetter' && searchBarInput.length > 1) {
+      alert('Your search must have only 1 (one) character');
+    }
     switch (titleToFetch) {
     case 'Meals': {
       const mealsFetched = await infoFoodRequest({
         key: searchFilter,
         search: searchBarInput,
       });
+      if (!mealsFetched.meals) {
+        alert('Sorry, we haven\'t found any recipes for these filters.');
+        break;
+      }
       setRecepies(mealsFetched);
     }
       break;
@@ -37,6 +58,10 @@ export default function SearchBar(props) {
         key: searchFilter,
         search: searchBarInput,
       });
+      if (!drinksFetched.drinks) {
+        alert('Sorry, we haven\'t found any recipes for these filters.');
+        break;
+      }
       setRecepies(drinksFetched);
     }
       break;

@@ -5,8 +5,8 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWithRouter';
 import App from '../App';
 
-describe('Sequência de testes relacionadas à página <Header />', () => {
-  test('Ferifica a funcionalidade do botão searchIcon', async () => {
+describe('Sequência de testes relacionadas à página <SearchBar />', () => {
+  test('Ferifica a funcionalidade dos botões inputRadio', async () => {
     renderWithRouter(<App />);
 
     const email = screen.getByTestId('email-input');
@@ -23,7 +23,7 @@ describe('Sequência de testes relacionadas à página <Header />', () => {
 
     userEvent.click(searchButton);
 
-    const searchInput = screen.getByTestId('search-input');
-    expect(searchInput).toBeInTheDocument();
+    const searchRadioFirstLetter = screen.getByTestId('first-letter-search-radio');
+    expect(searchRadioFirstLetter).toBeInTheDocument();
   });
 });
