@@ -10,7 +10,7 @@ function RecipesProvider({ children }) {
   });
 
   const values = useMemo(() => ({
-    recepies: recipes, setRecipes,
+    recipes, setRecipes,
   }), [recipes, setRecipes]);
 
   return (
