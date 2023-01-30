@@ -7,7 +7,7 @@ import { RecipesContext } from '../context/RecipesProvider';
 
 export default function SearchBar(props) {
   const { titleToFetch } = props;
-  const { setRecepies, recepies } = useContext(RecepiesContext);
+  const { setRecepies, recepies } = useContext(RecipesContext);
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: '',
     searchFilter: '',
