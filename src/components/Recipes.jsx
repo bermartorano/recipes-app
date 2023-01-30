@@ -1,42 +1,42 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { RecepiesContext } from '../context/RecepiesProvider';
-import RecepiCard from './RecipeCard';
+import { RecipesContext } from '../context/RecipesProvider';
+import RecipeCard from './RecipeCard';
 import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
 
 function Recipes(props) {
   const { pageSubject } = props;
-  const { recepies, setRecepies } = useContext(RecepiesContext);
-  const recepiesKeyText = `${pageSubject.toLowerCase()}s`;
-  const { [recepiesKeyText]: recepiesKey } = recepies;
+  const { recipes, setRecipes } = useContext(RecipesContext);
+  const recipesKeyText = `${pageSubject.toLowerCase()}s`;
+  const { [recipesKeyText]: recipesKey } = recipes;
   const maxRecipesToRender = 12;
-  const recipesToRender = recepiesKey.slice(0, maxRecipesToRender);
+  const recipesToRender = recipesKey.slice(0, maxRecipesToRender);
 
   useEffect(() => {
-    const inicalRecipes = async () => {
+    const initialRecipes = async () => {
       switch (pageSubject) {
       case 'Meal': {
         const inicialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
-        setRecepies(inicialMealsFetched);
+        setRecipes(inicialMealsFetched);
         break;
       }
 
       case 'Drink': {
         const inicialDrinksFetched = await infoDrinkRequest({ key: 'name', search: '' });
-        setRecepies(inicialDrinksFetched);
+        setRecipes(inicialDrinksFetched);
       }
         break;
       default:
       }
     };
-    inicalRecipes();
+    initialRecipes();
   }, []);
 
   return (
     <div>
       {recipesToRender.map((rec, index) => (
-        <RecepiCard
+        <RecipeCard
           key={ index }
           index={ index }
           recipeName={ rec[`str${pageSubject}`] }

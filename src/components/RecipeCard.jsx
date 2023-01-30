@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function RecepiCard(props) {
+function RecipeCard(props) {
   const { index, recipeName, imgSrc } = props;
   console.log(`data-testid= ${index}-recipe-card`);
 
@@ -19,9 +19,9 @@ function RecepiCard(props) {
   );
 }
 
-export default RecepiCard;
+export default RecipeCard;
 
-RecepiCard.propTypes = {
+RecipeCard.propTypes = {
   recipeName: PropTypes.string.isRequired,
   imgSrc: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,

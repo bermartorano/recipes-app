@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 export const RecipesContext = createContext();
 
 function RecipesProvider({ children }) {
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState({
+    meals: [],
+    drinks: [],
+  });
 
   const values = useMemo(() => ({
-    recipes, setRecipes,
+    recepies: recipes, setRecipes,
   }), [recipes, setRecipes]);
 
   return (

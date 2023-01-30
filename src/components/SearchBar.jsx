@@ -7,7 +7,7 @@ import { RecipesContext } from '../context/RecipesProvider';
 
 export default function SearchBar(props) {
   const { titleToFetch } = props;
-  const { setRecepies, recepies } = useContext(RecipesContext);
+  const { setRecipes, recipes } = useContext(RecipesContext);
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: '',
     searchFilter: '',
@@ -26,13 +26,13 @@ export default function SearchBar(props) {
     const sliceLimit = -1;
     const pageName = `${titleToFetch.toLowerCase()}`;
     const titleToFetchWithoutLastCharacter = titleToFetch.slice(0, sliceLimit);
-    const { [pageName]: recipesKey } = recepies;
+    const { [pageName]: recipesKey } = recipes;
     const [recipe] = recipesKey;
     if (recipesKey.length === 1) {
       history.push(`/${pageName}/${recipe[`id${titleToFetchWithoutLastCharacter}`]}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recepies]);
+  }, [recipes]);
 
   const handleClick = async () => {
     const { searchBarInput, searchFilter } = searchInfo;
@@ -49,7 +49,7 @@ export default function SearchBar(props) {
         alert('Sorry, we haven\'t found any recipes for these filters.');
         break;
       }
-      setRecepies(mealsFetched);
+      setRecipes(mealsFetched);
     }
       break;
 
@@ -62,7 +62,7 @@ export default function SearchBar(props) {
         alert('Sorry, we haven\'t found any recipes for these filters.');
         break;
       }
-      setRecepies(drinksFetched);
+      setRecipes(drinksFetched);
     }
       break;
     default:
