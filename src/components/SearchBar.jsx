@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
-import { RecepiesContext } from '../context/RecepiesProvider';
+import { RecipesContext } from '../context/RecipesProvider';
 
 export default function SearchBar(props) {
   const { titleToFetch } = props;

@@ -3,8 +3,9 @@ function urlFoodConstructor({ key, search } = { key: 'name', search: '' }) {
 
   const urlConstructor = {
     name: `${baseUrl}search.php?s=${search}`,
-    firstLetter: `${baseUrl}search.php?f=${search}`,
+    recipeId: `${baseUrl}lookup.php?i=${search}`,
     ingredient: `${baseUrl}filter.php?i=${search}`,
+    firstLetter: `${baseUrl}search.php?f=${search}`,
     categories: `${baseUrl}list.php?c=list`,
   };
 
