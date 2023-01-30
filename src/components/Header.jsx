@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { ReactComponent as ProfileIcon } from '../images/profileIcon.svg';
-import { ReactComponent as SearchIcon } from '../images/searchIcon.svg';
+import { Link } from 'react-router-dom';
+// import { ReactComponent as ProfileIcon } from '../images/profileIcon.svg';
+// import { ReactComponent as SearchIcon } from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import profileIcon from '../images/profileIcon.svg';
+import searchIcon from '../images/searchIcon.svg';
 
 function Header(props) {
   const { title, hasSearchIcon } = props;
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const history = useHistory();
-
-  const handleProfileClick = () => {
-    history.push('/profile');
-  };
 
   const handleSearchIconClick = () => {
     setShowSearchBar(!showSearchBar);
@@ -21,9 +18,19 @@ function Header(props) {
   return (
     <div>
       { showSearchBar && <SearchBar titleToFetch={ title } />}
-      <ProfileIcon onClick={ handleProfileClick } data-testid="profile-top-btn" />
+      <Link to="/profile">
+        <img src={ profileIcon } alt="drink-page" data-testid="profile-top-btn" />
+      </Link>
       { hasSearchIcon && (
-        <SearchIcon onClick={ handleSearchIconClick } data-testid="search-top-btn" />)}
+        <img
+          src={ searchIcon }
+          alt="search-icon"
+          data-testid="search-top-btn"
+          role="presentation"
+          onClick={ handleSearchIconClick }
+          onKeyDown={ handleSearchIconClick }
+        />
+      )}
       <p data-testid="page-title">{title}</p>
     </div>
   );

@@ -1,8 +1,9 @@
 import React from 'react';
+import { Header } from '../services/componentsExport';
 
 function FavoriteRecipes() {
   return (
-    <div>FavoriteRecipes</div>
+    <Header title="Favorite Recipes" hasSearchIcon={ false } />
   );
 }
 
