@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 function RecipeCard(props) {
   const { index, recipeName, imgSrc } = props;
-  console.log(`data-testid= ${index}-recipe-card`);
 
   return (
     <div data-testid={ `${index}-recipe-card` }>
