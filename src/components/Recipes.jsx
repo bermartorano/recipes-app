@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RecipesContext } from '../context/RecipesProvider';
 import RecipeCard from './RecipeCard';
@@ -8,6 +9,7 @@ import { infoDrinkRequest } from '../services/drinkAPI';
 function Recipes(props) {
   const { pageSubject } = props;
   const { recipes, setRecipes } = useContext(RecipesContext);
+  const history = useHistory();
   const [categories, setCategories] = useState([]);
   const [categoryFilterOn, setCategoryFilterOn] = useState(false);
   const recipesKeyText = `${pageSubject.toLowerCase()}s`;
@@ -75,6 +77,11 @@ function Recipes(props) {
     initialRecipes();
   };
 
+  const handleCardClick = (id) => {
+    const pageTitle = `${pageSubject.toLowerCase()}s`;
+    history.push(`/${pageTitle}/${id}`);
+  };
+
   return (
     <div>
       <div>
@@ -97,12 +104,18 @@ function Recipes(props) {
         </button>
       </div>
       {recipesToRender.map((rec, index) => (
-        <RecipeCard
+        <div
+          role="presentation"
           key={ index }
-          index={ index }
-          recipeName={ rec[`str${pageSubject}`] }
-          imgSrc={ rec[`str${pageSubject}Thumb`] }
-        />
+          onClick={ () => handleCardClick(rec[`id${pageSubject}`]) }
+          onKeyDown={ () => handleCardClick(rec[`id${pageSubject}`]) }
+        >
+          <RecipeCard
+            index={ index }
+            recipeName={ rec[`str${pageSubject}`] }
+            imgSrc={ rec[`str${pageSubject}Thumb`] }
+          />
+        </div>
       ))}
     </div>
   );
