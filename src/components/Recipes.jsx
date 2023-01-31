@@ -6,42 +6,43 @@ import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
 
 function Recipes(props) {
-  const { pageSubject } = props;
   const { recipes, setRecipes } = useContext(RecipesContext);
-  const recipesKeyText = `${pageSubject.toLowerCase()}s`;
-  const { [recipesKeyText]: recipesKey } = recipes;
-  const maxRecipesToRender = 12;
-  const recipesToRender = recipesKey.slice(0, maxRecipesToRender);
+  const { pageSubject } = props;
+
+  async function initialRecipes() {
+    switch (pageSubject) {
+    case 'Meal': {
+      const { meals } = await infoFoodRequest({ key: 'name', search: '' });
+      setRecipes({ ...recipes, meals });
+      break;
+    }
+
+    case 'Drink': {
+      const { drinks } = await infoDrinkRequest({ key: 'name', search: '' });
+      setRecipes({ ...recipes, drinks });
+    }
+      break;
+    default:
+    }
+  }
 
   useEffect(() => {
-    const initialRecipes = async () => {
-      switch (pageSubject) {
-      case 'Meal': {
-        const inicialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
-        setRecipes(inicialMealsFetched);
-        break;
-      }
-
-      case 'Drink': {
-        const inicialDrinksFetched = await infoDrinkRequest({ key: 'name', search: '' });
-        setRecipes(inicialDrinksFetched);
-      }
-        break;
-      default:
-      }
-    };
     initialRecipes();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const maxRecipesToRender = 12;
+  const { [`${pageSubject.toLowerCase()}s`]: recipesKey } = recipes;
+  const recipesToRender = recipesKey.slice(0, maxRecipesToRender);
+
   return (
     <div>
-      {recipesToRender.map((rec, index) => (
+      {recipesToRender.map((recipe, index) => (
         <RecipeCard
           key={ index }
           index={ index }
-          recipeName={ rec[`str${pageSubject}`] }
-          imgSrc={ rec[`str${pageSubject}Thumb`] }
+          recipeName={ recipe[`str${pageSubject}`] }
+          imgSrc={ recipe[`str${pageSubject}Thumb`] }
         />
       ))}
     </div>
