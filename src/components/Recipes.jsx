@@ -9,6 +9,7 @@ function Recipes(props) {
   const { pageSubject } = props;
   const { recipes, setRecipes } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
+  const [categoryFilterOn, setCategoryFilterOn] = useState(false);
   const recipesKeyText = `${pageSubject.toLowerCase()}s`;
   const { [recipesKeyText]: recipesKey } = recipes;
   const maxRecipesToRender = 12;
@@ -45,23 +46,28 @@ function Recipes(props) {
   const handleCategoryClick = async ({ target }) => {
     const { innerText } = target;
 
-    switch (pageSubject) {
-    case 'Meal': {
-      const recipesByCategory = await infoFoodRequest({
-        key: 'categoryFilter', search: innerText });
-      console.log(recipesByCategory);
-      setRecipes(recipesByCategory);
-    }
-      break;
+    if (categoryFilterOn) {
+      initialRecipes();
+      setCategoryFilterOn(false);
+    } else {
+      setCategoryFilterOn(true);
+      switch (pageSubject) {
+      case 'Meal': {
+        const recipesByCategory = await infoFoodRequest({
+          key: 'categoryFilter', search: innerText });
+        setRecipes(recipesByCategory);
+      }
+        break;
 
-    case 'Drink': {
-      const recipesByCategory = await infoDrinkRequest({
-        key: 'categoryFilter', search: innerText });
-      console.log(recipesByCategory);
-      setRecipes(recipesByCategory);
-    }
-      break;
-    default:
+      case 'Drink': {
+        const recipesByCategory = await infoDrinkRequest({
+          key: 'categoryFilter', search: innerText });
+        console.log(recipesByCategory);
+        setRecipes(recipesByCategory);
+      }
+        break;
+      default:
+      }
     }
   };
 
