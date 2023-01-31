@@ -24,9 +24,10 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
   }, []);
 
   return (
-    <div>
+    <main>
+      <img src="" alt="" />
       <p>{ recipeInfo.title }</p>
-    </div>
+    </main>
   );
 }
 
