@@ -7,6 +7,7 @@ function urlDrinkConstructor({ key, search } = { key: 'name', search: '' }) {
     ingredient: `${baseUrl}filter.php?i=${search}`,
     firstLetter: `${baseUrl}search.php?f=${search}`,
     categories: `${baseUrl}list.php?c=list`,
+    categoryFilter: `${baseUrl}filter.php?c=${search}`,
   };
 
   return urlConstructor[key];

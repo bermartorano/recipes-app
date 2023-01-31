@@ -15,43 +15,81 @@ function Recipes(props) {
   const maxCategoriesToRender = 5;
   const recipesToRender = recipesKey.slice(0, maxRecipesToRender);
 
-  useEffect(() => {
-    const initialRecipes = async () => {
-      switch (pageSubject) {
-      case 'Meal': {
-        const initialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
-        const categoriesFetch = await infoFoodRequest({ key: 'categories', search: '' });
-        const categoriesArray = [...categoriesFetch.meals];
-        setCategories(categoriesArray);
-        setRecipes(initialMealsFetched);
-        break;
-      }
+  const initialRecipes = async () => {
+    switch (pageSubject) {
+    case 'Meal': {
+      const initialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
+      const categoriesFetch = await infoFoodRequest({ key: 'categories', search: '' });
+      const categoriesArray = [...categoriesFetch.meals];
+      setCategories(categoriesArray);
+      setRecipes(initialMealsFetched);
+      break;
+    }
 
-      case 'Drink': {
-        const inicialDrinksFetched = await infoDrinkRequest({ key: 'name', search: '' });
-        const categoriesFetch = await infoDrinkRequest({ key: 'categories', search: '' });
-        const categoriesArray = [...categoriesFetch.drinks];
-        setCategories(categoriesArray);
-        setRecipes(inicialDrinksFetched);
-      }
-        break;
-      default:
-      }
-    };
+    case 'Drink': {
+      const inicialDrinksFetched = await infoDrinkRequest({ key: 'name', search: '' });
+      const categoriesFetch = await infoDrinkRequest({ key: 'categories', search: '' });
+      const categoriesArray = [...categoriesFetch.drinks];
+      setCategories(categoriesArray);
+      setRecipes(inicialDrinksFetched);
+    }
+      break;
+    default:
+    }
+  };
+
+  useEffect(() => {
     initialRecipes();
   }, []);
 
+  const handleCategoryClick = async ({ target }) => {
+    const { innerText } = target;
+
+    switch (pageSubject) {
+    case 'Meal': {
+      const recipesByCategory = await infoFoodRequest({
+        key: 'categoryFilter', search: innerText });
+      console.log(recipesByCategory);
+      setRecipes(recipesByCategory);
+    }
+      break;
+
+    case 'Drink': {
+      const recipesByCategory = await infoDrinkRequest({
+        key: 'categoryFilter', search: innerText });
+      console.log(recipesByCategory);
+      setRecipes(recipesByCategory);
+    }
+      break;
+    default:
+    }
+  };
+
+  const handleClearFilters = async () => {
+    initialRecipes();
+  };
+
   return (
     <div>
-      {categories.slice(0, maxCategoriesToRender).map((cat, index) => (
+      <div>
+        {categories.slice(0, maxCategoriesToRender).map((cat, index) => (
+          <button
+            type="button"
+            key={ index }
+            data-testid={ `${cat.strCategory}-category-filter` }
+            onClick={ handleCategoryClick }
+          >
+            {`${cat.strCategory}`}
+          </button>
+        ))}
         <button
           type="button"
-          key={ index }
-          data-testid={ `${cat.strCategory}-category-filter` }
+          data-testid="All-category-filter"
+          onClick={ handleClearFilters }
         >
-          {`${cat.strCategory}`}
+          All
         </button>
-      ))}
+      </div>
       {recipesToRender.map((rec, index) => (
         <RecipeCard
           key={ index }
