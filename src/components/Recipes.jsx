@@ -29,7 +29,7 @@ function Recipes(props) {
 
       case 'Drink': {
         const inicialDrinksFetched = await infoDrinkRequest({ key: 'name', search: '' });
-        const categoriesFetch = await infoRequest({ key: 'categories', search: '' });
+        const categoriesFetch = await infoDrinkRequest({ key: 'categories', search: '' });
         const categoriesArray = [...categoriesFetch.drinks];
         setCategories(categoriesArray);
         setRecipes(inicialDrinksFetched);
