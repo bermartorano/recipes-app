@@ -1,12 +1,26 @@
 import { screen } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
-import { renderWithRouter } from './helpers/renderWithRouter';
+
+import { renderWith } from './helpers/renderWith';
+
+import { fetchMock } from './mock/fetchMock';
+
 import { Login } from '../services/pagesExports';
 
 describe('Testa o componente <Login />', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch');
+    global.fetch = jest.fn(fetchMock);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('Verifica se Login contém os campos de email, senha e botão: ', () => {
-    renderWithRouter(<Login />);
+    renderWith(<Login />);
 
     const login = screen.getByText(/login/i);
     const email = screen.getByTestId('email-input');
@@ -20,7 +34,7 @@ describe('Testa o componente <Login />', () => {
   });
 
   test('Verifica se ao clicar no botão. seremos redirecionados para "/meals"', () => {
-    const { history } = renderWithRouter(<Login />);
+    const { history } = renderWith(<Login />);
 
     const email = screen.getByTestId('email-input');
     const password = screen.getByTestId('password-input');
