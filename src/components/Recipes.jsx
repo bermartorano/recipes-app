@@ -17,8 +17,9 @@ function Recipes(props) {
     const initialRecipes = async () => {
       switch (pageSubject) {
       case 'Meal': {
-        const inicialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
-        setRecipes(inicialMealsFetched);
+        const initialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
+        const categories = await infoFoodRequest({ key: 'categories', sea });
+        setRecipes(initialMealsFetched);
         break;
       }
 
