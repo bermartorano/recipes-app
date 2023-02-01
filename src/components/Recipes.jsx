@@ -43,6 +43,7 @@ function Recipes(props) {
 
   useEffect(() => {
     initialRecipes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCategoryClick = async ({ target }) => {
