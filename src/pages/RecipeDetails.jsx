@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { infoDrinkRequest } from '../services/drinkAPI';
 import { infoFoodRequest } from '../services/foodAPI';
 
@@ -8,7 +9,7 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
   const [recipeInfo, setRecipeInfo] = useState({});
 
   const fetchRecipe = async () => {
-    const optionToFetch = {
+    const optionsToFetch = {
       Meal: async () => {
         const { meals } = await infoFoodRequest({ key: 'recipeId', search: id });
         setRecipeInfo(meals[0]);
@@ -18,7 +19,7 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
         setRecipeInfo(drinks[0]);
       },
     };
-    optionToFetch[actualPage]();
+    optionsToFetch[actualPage]();
   };
 
   useEffect(() => {
@@ -39,14 +40,6 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
             { `${value} - ${recipeInfo[`strMeasure${arrayOfElements.length + 1}`]}` }
           </li>)]
         : arrayOfElements), []);
-
-  // .filter(([key, value]) => (key.startsWith('strIngredient') && !!value))
-  // .map((eachIngredient, index) => (
-  //   <li
-  //     key={ `strIngredient-${index}` }
-  //   >
-  //     { eachIngredient[1] }
-  //   </li>));
 
   return (
     <main>
@@ -90,4 +83,17 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
   );
 }
 
-RecipeDetails.propTypes = {}.isRequired;
+// .filter(([key, value]) => (key.startsWith('strIngredient') && !!value))
+// .map((eachIngredient, index) => (
+//   <li
+//     key={ `strIngredient-${index}` }
+//   >
+//     { eachIngredient[1] }
+//   </li>));
+
+RecipeDetails.propTypes = {
+  match: PropTypes.shape({
+    url: PropTypes.string,
+    params: PropTypes.shape({ id: PropTypes.string }),
+  }),
+}.isRequired;

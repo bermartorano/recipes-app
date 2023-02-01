@@ -39,7 +39,9 @@ export default class Login extends Component {
 
   render() {
     const { disable, isLoggedIn } = this.state;
-    return (isLoggedIn) ? <Redirect to="/meals" />
+
+    return (isLoggedIn)
+      ? <Redirect to="/meals" />
       : (
         <main className="main-login">
           <section className="login-section">

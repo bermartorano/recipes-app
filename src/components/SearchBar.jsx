@@ -6,8 +6,7 @@ import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
 import { RecipesContext } from '../context/RecipesProvider';
 
-export default function SearchBar(props) {
-  const { titleToFetch } = props;
+export default function SearchBar({ titleToFetch }) {
   const { recipes, setRecipes } = useContext(RecipesContext);
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: '',
@@ -21,7 +20,7 @@ export default function SearchBar(props) {
 
   useEffect(() => {
     const sliceLimit = -1;
-    const pageName = `${titleToFetch.toLowerCase()}`;
+    const pageName = titleToFetch.toLowerCase();
     const titleToFetchWithoutLastCharacter = titleToFetch.slice(0, sliceLimit);
     const { [pageName]: recipesKey } = recipes;
     const [recipe] = recipesKey;

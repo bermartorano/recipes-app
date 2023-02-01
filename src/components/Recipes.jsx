@@ -1,13 +1,14 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import { RecipesContext } from '../context/RecipesProvider';
 import RecipeCard from './RecipeCard';
+
 import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
 
-function Recipes(props) {
+function Recipes({ pageSubject }) {
   const { recipes, setRecipes } = useContext(RecipesContext);
-  const { pageSubject } = props;
 
   async function initialRecipes() {
     switch (pageSubject) {
