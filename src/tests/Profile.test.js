@@ -1,8 +1,15 @@
 import React from 'react';
 import { screen, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { renderWith } from './helpers/renderWith';
 import Profile from '../pages/Profile';
+
+function changePage(element) {
+  act(() => {
+    userEvent.click(element);
+  });
+}
 
 describe('Sequência de testes relacionadas à página <App />', () => {
   test('Verifica se os elementos do componente <Footer /> são renderizados na página', () => {
@@ -46,29 +53,26 @@ describe('Sequência de testes relacionadas à página <Profile />', () => {
   });
   test('Verifica se clicado, o botão nos redireciona a rota correta', () => {
     // Renderizar a página que o componente se encontra
-    const { history } = renderWith(<Profile />);
+    const { history } = renderWith(<Profile />, ['/profile']);
     // Capturar os elementos da tela
-    act(() => {
-      const captureDoneRecipes = screen.getByTestId(/profile-done-btn/);
-      const captureFavoriteRecipes = screen.getByTestId(/profile-favorite-btn/);
-      const captureLogout = screen.getByTestId(/profile-logout-btn/);
-      // Verificar os valores, a existência, etc desses elementos da tela
-      expect(captureDoneRecipes).toBeInTheDocument();
-      expect(captureFavoriteRecipes).toBeInTheDocument();
-      expect(captureLogout).toBeInTheDocument();
-      // Clicar nos botões
-      act(() => {
-        captureDoneRecipes.click();
-        captureFavoriteRecipes.click();
-        captureLogout.click();
-      });
-      // Verificar se a rota mudou
-      const { pathname } = history.location;
-      expect(pathname).toBe('/done-recipes');
-      expect(pathname).toBe('/favorite-recipes');
-      expect(pathname).toBe('/');
+    const elements = [
+      screen.getByTestId(/profile-done-btn/),
+      screen.getByTestId(/profile-favorite-btn/),
+      screen.getByTestId(/profile-logout-btn/),
+    ];
+    // Verificar os valores, a existência, etc desses elementos da tela
+    expect(elements[0]).toBeInTheDocument();
+    expect(elements[1]).toBeInTheDocument();
+    expect(elements[2]).toBeInTheDocument();
+
+    elements.forEach((eachElement, index) => {
+      const pages = ['/done-recipes', '/favorite-recipes', '/'];
+      changePage(eachElement);
+      expect(history.location.pathname).toBe(pages[index]);
+      history.push('/profile');
     });
   });
+
   afterEach(cleanup);
   it('Verifica se exibe o display de usuário', () => {
     localStorage.setItem('user', JSON.stringify({ email: 'test@example.com' }));
