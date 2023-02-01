@@ -2,12 +2,12 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithRouter } from './helpers/renderWithRouter';
+import { renderWith } from './helpers/renderWith';
 import App from '../App';
 
 describe('Sequência de testes relacionadas à página <Header />', () => {
   test('Ferifica a funcionalidade do botão searchIcon', async () => {
-    renderWithRouter(<App />);
+    renderWith(<App />);
 
     const email = screen.getByTestId('email-input');
     const password = screen.getByTestId('password-input');
