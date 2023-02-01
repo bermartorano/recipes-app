@@ -34,7 +34,7 @@ export default class Login extends Component {
   };
 
   validateMail(email) {
-    return !!(email.includes('@') && email.includes('.com') === true);
+    return (email.includes('@') && email.includes('.com'));
   }
 
   render() {
