@@ -8,8 +8,7 @@ function withRouter(component, history) {
 }
 
 function withProvider(component) {
-  return (<RecipesProvider>{ component }</RecipesProvider>
-  );
+  return (<RecipesProvider>{ component }</RecipesProvider>);
 }
 
 export function renderWith(component, initialEntries = ['/']) {
