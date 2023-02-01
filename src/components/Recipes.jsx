@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import { RecipesContext } from '../context/RecipesProvider';
 import RecipeCard from './RecipeCard';
+
 import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
 
-function Recipes(props) {
-  const { pageSubject } = props;
+function Recipes({ pageSubject }) {
   const { recipes, setRecipes } = useContext(RecipesContext);
+
   const history = useHistory();
   const [categories, setCategories] = useState([]);
   const [categoryFilterOn, setCategoryFilterOn] = useState(false);
@@ -25,7 +27,7 @@ function Recipes(props) {
       const categoriesFetch = await infoFoodRequest({ key: 'categories', search: '' });
       const categoriesArray = [...categoriesFetch.meals];
       setCategories(categoriesArray);
-      setRecipes(initialMealsFetched);
+      setRecipes({ ...recipes, meals: [...initialMealsFetched.meals] });
       break;
     }
 
@@ -34,7 +36,7 @@ function Recipes(props) {
       const categoriesFetch = await infoDrinkRequest({ key: 'categories', search: '' });
       const categoriesArray = [...categoriesFetch.drinks];
       setCategories(categoriesArray);
-      setRecipes(inicialDrinksFetched);
+      setRecipes({ ...recipes, drinks: [...inicialDrinksFetched.drinks] });
     }
       break;
     default:

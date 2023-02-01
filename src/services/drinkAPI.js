@@ -1,4 +1,4 @@
-function urlDrinkConstructor({ key, search } = { key: 'name', search: '' }) {
+function urlDrinkConstructor({ key, search }) {
   const baseUrl = 'https://www.thecocktaildb.com/api/json/v1/1/';
 
   const urlConstructor = {
@@ -13,7 +13,7 @@ function urlDrinkConstructor({ key, search } = { key: 'name', search: '' }) {
   return urlConstructor[key];
 }
 
-export async function infoDrinkRequest({ key, search }) {
+export async function infoDrinkRequest({ key, search } = { key: 'name', search: '' }) {
   try {
     const data = await fetch(urlDrinkConstructor({ key, search }));
     const results = await data.json();

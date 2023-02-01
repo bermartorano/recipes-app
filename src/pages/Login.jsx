@@ -34,52 +34,52 @@ export default class Login extends Component {
   };
 
   validateMail(email) {
-    return !!(email.includes('@') && email.includes('.com') === true);
+    return (email.includes('@') && email.includes('.com'));
   }
 
   render() {
     const { disable, isLoggedIn } = this.state;
-    if (isLoggedIn) {
-      return <Redirect to="/meals" />;
-    }
-    return (
-      <main className="main-login">
-        <section className="login-section">
-          <h1 className="login-title">Login</h1>
-          <form onSubmit={ this.handleSubmit }>
-            <label className="login-label" htmlFor="email">
-              Email
-              <input
-                data-testid="email-input"
-                onChange={ this.handleChange }
-                className="login-input"
-                type="email"
-                name="email"
-                placeholder="Digite seu E-mail"
-              />
-            </label>
-            <label className="login-label" htmlFor="password">
-              Senha
-              <input
-                data-testid="password-input"
-                className="login-input"
-                onChange={ this.handleChange }
-                type="password"
-                name="password"
-                placeholder="Digite sua senha"
-              />
-            </label>
-            <button
-              className="login-button"
-              type="submit"
-              data-testid="login-submit-btn"
-              disabled={ disable }
-            >
-              Entrar
-            </button>
-          </form>
-        </section>
-      </main>
-    );
+
+    return (isLoggedIn)
+      ? <Redirect to="/meals" />
+      : (
+        <main className="main-login">
+          <section className="login-section">
+            <h1 className="login-title">Login</h1>
+            <form onSubmit={ this.handleSubmit }>
+              <label className="login-label" htmlFor="email">
+                Email
+                <input
+                  data-testid="email-input"
+                  onChange={ this.handleChange }
+                  className="login-input"
+                  type="email"
+                  name="email"
+                  placeholder="Digite seu E-mail"
+                />
+              </label>
+              <label className="login-label" htmlFor="password">
+                Senha
+                <input
+                  data-testid="password-input"
+                  className="login-input"
+                  onChange={ this.handleChange }
+                  type="password"
+                  name="password"
+                  placeholder="Digite sua senha"
+                />
+              </label>
+              <button
+                className="login-button"
+                type="submit"
+                data-testid="login-submit-btn"
+                disabled={ disable }
+              >
+                Entrar
+              </button>
+            </form>
+          </section>
+        </main>
+      );
   }
 }

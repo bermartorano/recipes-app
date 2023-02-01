@@ -1,8 +1,11 @@
-import React from 'react';
 import { screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
+
 import { renderWith } from './helpers/renderWith';
+
+import { fetchMock } from './mock/fetchMock';
+
 import Profile from '../pages/Profile';
 
 function changePage(element) {
@@ -12,6 +15,15 @@ function changePage(element) {
 }
 
 describe('Sequência de testes relacionadas à página <App />', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch');
+    global.fetch = jest.fn(fetchMock);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('Verifica se os elementos do componente <Footer /> são renderizados na página', () => {
     // Renderizar a página que o componente se encontra
     renderWith(<Profile />, ['/profile']);

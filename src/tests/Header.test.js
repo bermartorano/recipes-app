@@ -1,12 +1,25 @@
-import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
+
 import { renderWith } from './helpers/renderWith';
+
+import { fetchMock } from './mock/fetchMock';
+
 import App from '../App';
 
 describe('Sequência de testes relacionadas à página <Header />', () => {
-  test('Ferifica a funcionalidade do botão searchIcon', async () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch');
+    global.fetch = jest.fn(fetchMock);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('Verifica a funcionalidade do botão searchIcon', async () => {
     renderWith(<App />);
 
     const email = screen.getByTestId('email-input');

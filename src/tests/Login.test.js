@@ -1,10 +1,24 @@
 import { screen } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
+
 import { renderWith } from './helpers/renderWith';
+
+import { fetchMock } from './mock/fetchMock';
+
 import { Login } from '../services/pagesExports';
 
 describe('Testa o componente <Login />', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch');
+    global.fetch = jest.fn(fetchMock);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('Verifica se Login contém os campos de email, senha e botão: ', () => {
     renderWith(<Login />);
 

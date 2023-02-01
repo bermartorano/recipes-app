@@ -1,30 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import { infoFoodRequest } from '../services/foodAPI';
 import { infoDrinkRequest } from '../services/drinkAPI';
 import { RecipesContext } from '../context/RecipesProvider';
 
-export default function SearchBar(props) {
-  const { titleToFetch } = props;
-  const { setRecipes, recipes } = useContext(RecipesContext);
+export default function SearchBar({ titleToFetch }) {
+  const { recipes, setRecipes } = useContext(RecipesContext);
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: '',
     searchFilter: '',
   });
   const history = useHistory();
 
-  const handleChange = ({ target }) => {
-    const { value, name } = target;
-    setSearchInfo({
-      ...searchInfo,
-      [name]: value,
-    });
+  const handleChange = ({ target: { value, name } }) => {
+    setSearchInfo({ ...searchInfo, [name]: value });
   };
 
   useEffect(() => {
     const sliceLimit = -1;
-    const pageName = `${titleToFetch.toLowerCase()}`;
+    const pageName = titleToFetch.toLowerCase();
     const titleToFetchWithoutLastCharacter = titleToFetch.slice(0, sliceLimit);
     const { [pageName]: recipesKey } = recipes;
     const [recipe] = recipesKey;
@@ -36,16 +32,21 @@ export default function SearchBar(props) {
 
   const handleClick = async () => {
     const { searchBarInput, searchFilter } = searchInfo;
+
     if (searchFilter === 'firstLetter' && searchBarInput.length > 1) {
+      // eslint-disable-next-line no-alert
       alert('Your search must have only 1 (one) character');
     }
+
     switch (titleToFetch) {
     case 'Meals': {
       const mealsFetched = await infoFoodRequest({
         key: searchFilter,
         search: searchBarInput,
       });
+
       if (!mealsFetched.meals) {
+        // eslint-disable-next-line no-alert
         alert('Sorry, we haven\'t found any recipes for these filters.');
         break;
       }
@@ -58,12 +59,15 @@ export default function SearchBar(props) {
         key: searchFilter,
         search: searchBarInput,
       });
+
       if (!drinksFetched.drinks) {
+        // eslint-disable-next-line no-alert
         alert('Sorry, we haven\'t found any recipes for these filters.');
         break;
       }
       setRecipes(drinksFetched);
     }
+
       break;
     default:
       break;
