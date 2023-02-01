@@ -25,7 +25,7 @@ function Recipes(props) {
       const categoriesFetch = await infoFoodRequest({ key: 'categories', search: '' });
       const categoriesArray = [...categoriesFetch.meals];
       setCategories(categoriesArray);
-      setRecipes(initialMealsFetched);
+      setRecipes({ ...recipes, meals: [...initialMealsFetched.meals] });
       break;
     }
 
@@ -34,7 +34,7 @@ function Recipes(props) {
       const categoriesFetch = await infoDrinkRequest({ key: 'categories', search: '' });
       const categoriesArray = [...categoriesFetch.drinks];
       setCategories(categoriesArray);
-      setRecipes(inicialDrinksFetched);
+      setRecipes({ ...recipes, drinks: [...inicialDrinksFetched.drinks] });
     }
       break;
     default:
