@@ -46,15 +46,7 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
   //     key={ `strIngredient-${index}` }
   //   >
   //     { eachIngredient[1] }
-
   //   </li>));
-
-  //   A foto deve possuir o atributo data-testid="recipe-photo";
-  // O título deve possuir o atributo data-testid="recipe-title";
-  // O texto da categoria deve possuir o atributo data-testid="recipe-category";
-  // Os ingredientes devem possuir o atributo data-testid="${index}-ingredient-name-and-measure";
-  // O texto de instruções deve possuir o atributo data-testid="instructions";
-  // O vídeo, presente somente na tela de comidas, deve possuir o atributo data-testid="video";
 
   return (
     <main>
