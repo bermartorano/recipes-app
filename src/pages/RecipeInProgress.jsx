@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { infoDrinkRequest } from '../services/drinkAPI';
 import { infoFoodRequest } from '../services/foodAPI';
 
@@ -8,6 +9,7 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
   const [ingredientsList, setIngredientsList] = useState([]);
   const [ingredCheck, setIngredCheck] = useState({});
   const [allChecked, setAllChecked] = useState(false);
+  const history = useHistory();
   const actualPage = (url.includes('meals')) ? 'Meal' : 'Drink';
 
   const fetchRecipe = async () => {
@@ -68,12 +70,11 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
   useEffect(() => {
     const ingCheckLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
     if (ingCheckLS) {
-      console.log('tem local storage');
       setIngredCheck(ingCheckLS);
     } else {
       getInicialCheckState();
-      console.log('não tem local storage');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ingredientsList]);
 
   const handleCheckClick = ({ target: { name } }) => {
@@ -86,6 +87,66 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
     const allTrue = Object.values(ingredCheck).every((boolean) => boolean);
     setAllChecked(allTrue);
   }, [ingredCheck]);
+
+  const getDate = () => {
+    // FONTE: https://horadecodar.com.br/2021/04/03/como-pegar-a-data-atual-com-javascript/
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
+    const dataAtual = `${ano}-${mes}-${dia}`;
+    return dataAtual;
+  };
+
+  const convertRecipeInfo = (recipe) => {
+    switch (actualPage) {
+    case 'Meal': {
+      const recipeToSave = {
+        id: recipe.idMeal,
+        type: 'meal',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        alcoholicOrNot: '',
+        name: recipe.strMeal,
+        image: recipe.strMealThumb,
+        doneDate: new Date(),
+        tags: recipe.strTags ? recipe.strTags.split(',') : [],
+      };
+      return recipeToSave;
+    }
+
+    case 'Drink': {
+      const recipeToSave = {
+        id: recipe.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: recipe.strCategory,
+        alcoholicOrNot: recipe.strAlcoholic,
+        name: recipe.srtDrink,
+        image: recipe.strDrinkThumb,
+        doneDate: getDate(),
+        tags: recipe.strTags ? recipe.strTags : [],
+      };
+      return recipeToSave;
+    }
+
+    default:
+      break;
+    }
+  };
+
+  const handleFinishClick = () => {
+    const recipeToSave = convertRecipeInfo(recipeInProgressInfo);
+    console.log(recipeToSave);
+    const doneRecipesLS = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (doneRecipesLS) {
+      const newDoneRecipes = [...doneRecipesLS, recipeToSave];
+      localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipes));
+      history.push('/done-recipes');
+    } else {
+      localStorage.setItem('doneRecipes', JSON.stringify([recipeToSave]));
+    }
+  };
 
   return (
     <div>
@@ -136,6 +197,7 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
         type="button"
         data-testid="finish-recipe-btn"
         disabled={ !allChecked }
+        onClick={ handleFinishClick }
       >
         Finalizar
       </button>
