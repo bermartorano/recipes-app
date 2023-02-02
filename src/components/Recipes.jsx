@@ -49,7 +49,7 @@ function Recipes({ pageSubject }) {
   }, []);
 
   const handleCategoryClick = async ({ target }) => {
-    const { innerText } = target;
+    const { value } = target;
 
     if (categoryFilterOn) {
       initialRecipes();
@@ -59,14 +59,14 @@ function Recipes({ pageSubject }) {
       switch (pageSubject) {
       case 'Meal': {
         const recipesByCategory = await infoFoodRequest({
-          key: 'categoryFilter', search: innerText });
+          key: 'categoryFilter', search: value });
         setRecipes(recipesByCategory);
       }
         break;
 
       case 'Drink': {
         const recipesByCategory = await infoDrinkRequest({
-          key: 'categoryFilter', search: innerText });
+          key: 'categoryFilter', search: value });
         console.log(recipesByCategory);
         setRecipes(recipesByCategory);
       }
@@ -94,6 +94,7 @@ function Recipes({ pageSubject }) {
             key={ index }
             data-testid={ `${cat.strCategory}-category-filter` }
             onClick={ handleCategoryClick }
+            value={ cat.strCategory }
           >
             {`${cat.strCategory}`}
           </button>
@@ -109,6 +110,7 @@ function Recipes({ pageSubject }) {
       {recipesToRender.map((rec, index) => (
         <div
           role="presentation"
+          className="card-recipe"
           key={ index }
           onClick={ () => handleCardClick(rec[`id${pageSubject}`]) }
           onKeyDown={ () => handleCardClick(rec[`id${pageSubject}`]) }

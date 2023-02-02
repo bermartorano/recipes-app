@@ -1,8 +1,10 @@
 import { DRINKS, FILTERED_BY_NAME_DRINKS, FILTERED_BY_LETTER_DRINKS,
-  FILTERED_BY_INGREDIENT_DRINKS, INGREDIENTS_DRINKS_IDS, ALL_CATEGORIES_DRINKS } from './mockDrinkAPI';
+  FILTERED_BY_INGREDIENT_DRINKS, INGREDIENTS_DRINKS_IDS,
+  ALL_CATEGORIES_DRINKS, FILTERED_BY_CATEGORY_DRINKS } from './mockDrinkAPI';
 
 import { FILTERED_BY_INGREDIENT_FOODS, FILTERED_BY_LETTER_FOODS,
-  FILTERED_BY_NAME_FOODS, INGREDIENTS_FOODS_IDS, ALL_CATEGORIES_FOODS, FOODS } from './mockFoodAPI';
+  FILTERED_BY_NAME_FOODS, INGREDIENTS_FOODS_IDS,
+  ALL_CATEGORIES_FOODS, FOODS, FILTERED_BY_CATEGORY_FOODS } from './mockFoodAPI';
 
 function verifyKey(url, checkerObject) {
   const key = Object.keys(checkerObject)
@@ -46,6 +48,11 @@ function urlChecker(url) {
     return FILTERED_BY_LETTER_FOODS;
   case url.starsWith(`${defaultUrl.drink}search.php?f=`):
     return FILTERED_BY_LETTER_DRINKS;
+
+  case url.starsWith(`${defaultUrl.food}filter.php?c=`):
+    return FILTERED_BY_CATEGORY_FOODS;
+  case url.starsWith(`${defaultUrl.drink}filter.php?c=`):
+    return FILTERED_BY_CATEGORY_DRINKS;
 
   default:
     return { error: 'invalid URL ' };

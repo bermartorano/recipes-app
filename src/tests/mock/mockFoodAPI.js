@@ -987,6 +987,17 @@ export const FILTERED_BY_INGREDIENT_FOODS = {
   ],
 };
 
+// Busca realizada pela categoria Goat
+export const FILTERED_BY_CATEGORY_FOODS = {
+  meals: [
+    {
+      strMeal: 'Mbuzi Choma (Roasted Goat)',
+      strMealThumb: 'https://www.themealdb.com/images/media/meals/cuio7s1555492979.jpg',
+      idMeal: '52968',
+    },
+  ],
+};
+
 export const ALL_CATEGORIES_FOODS = {
   meals: [
     {
@@ -1032,14 +1043,6 @@ export const ALL_CATEGORIES_FOODS = {
       strCategory: 'Vegetarian',
     },
   ],
-};
-
-export const OPTIONS_FOOD_API = {
-  all: FOODS,
-  name: FILTERED_BY_NAME_FOODS,
-  firstLetter: FILTERED_BY_LETTER_FOODS,
-  ingredients: FILTERED_BY_INGREDIENT_FOODS,
-  categories: ALL_CATEGORIES_FOODS,
 };
 
 export const ID_52959 = {
