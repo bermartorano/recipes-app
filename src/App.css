@@ -52,3 +52,7 @@
     transform: rotate(-10deg);
   }
 }
+
+.checkbox-done {
+  text-decoration: line-through solid black;
+}
