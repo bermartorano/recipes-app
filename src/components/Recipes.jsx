@@ -47,7 +47,7 @@ function Recipes(props) {
   }, []);
 
   const handleCategoryClick = async ({ target }) => {
-    const { innerText } = target;
+    const { value } = target;
 
     if (categoryFilterOn) {
       initialRecipes();
@@ -57,14 +57,14 @@ function Recipes(props) {
       switch (pageSubject) {
       case 'Meal': {
         const recipesByCategory = await infoFoodRequest({
-          key: 'categoryFilter', search: innerText });
+          key: 'categoryFilter', search: value });
         setRecipes(recipesByCategory);
       }
         break;
 
       case 'Drink': {
         const recipesByCategory = await infoDrinkRequest({
-          key: 'categoryFilter', search: innerText });
+          key: 'categoryFilter', search: value });
         console.log(recipesByCategory);
         setRecipes(recipesByCategory);
       }
@@ -92,6 +92,7 @@ function Recipes(props) {
             key={ index }
             data-testid={ `${cat.strCategory}-category-filter` }
             onClick={ handleCategoryClick }
+            value={ cat.strCategory }
           >
             {`${cat.strCategory}`}
           </button>

@@ -7,6 +7,7 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
   const [recipeInProgressInfo, setRecipeInProgressInfo] = useState({});
   const [ingredientsList, setIngredientsList] = useState([]);
   const [ingredCheck, setIngredCheck] = useState({});
+  const [allChecked, setAllChecked] = useState(false);
   const actualPage = (url.includes('meals')) ? 'Meal' : 'Drink';
 
   const fetchRecipe = async () => {
@@ -81,10 +82,10 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
     localStorage.setItem('inProgressRecipes', JSON.stringify(newIngredCheck));
   };
 
-  // useEffect(() => {
-  //   const ingredCheckString = JSON.stringify(ingredCheck);
-  //   localStorage.setItem('inProgressRecipes', ingredCheckString);
-  // }, [ingredCheck]);
+  useEffect(() => {
+    const allTrue = Object.values(ingredCheck).every((boolean) => boolean);
+    setAllChecked(allTrue);
+  }, [ingredCheck]);
 
   return (
     <div>
@@ -134,6 +135,7 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        disabled={ !allChecked }
       >
         Finalizar
       </button>
