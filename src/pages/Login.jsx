@@ -25,12 +25,9 @@ export default class Login extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const number = 7;
-    const { email, password } = this.state;
-    if (this.validateMail(email) && password.length >= number) {
-      localStorage.setItem('user', JSON.stringify({ email }));
-      this.setState({ isLoggedIn: true });
-    }
+    const { email } = this.state;
+    localStorage.setItem('user', JSON.stringify({ email }));
+    this.setState({ isLoggedIn: true });
   };
 
   validateMail(email) {
