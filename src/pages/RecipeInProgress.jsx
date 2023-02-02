@@ -56,18 +56,35 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipeInProgressInfo]);
 
-  useEffect(() => {
+  const getInicialCheckState = () => {
     const initialCheckState = ingredientsList.reduce((acc, ingAndMeasure) => {
-      console.log(ingAndMeasure);
       const result = { ...acc, [ingAndMeasure[0]]: false };
       return result;
     }, {});
     setIngredCheck(initialCheckState);
+  };
+
+  useEffect(() => {
+    const ingCheckLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (ingCheckLS) {
+      console.log('tem local storage');
+      setIngredCheck(ingCheckLS);
+    } else {
+      getInicialCheckState();
+      console.log('não tem local storage');
+    }
   }, [ingredientsList]);
 
   const handleCheckClick = ({ target: { name } }) => {
-    setIngredCheck({ ...ingredCheck, [name]: !ingredCheck[name] });
+    const newIngredCheck = { ...ingredCheck, [name]: !ingredCheck[name] };
+    setIngredCheck(newIngredCheck);
+    localStorage.setItem('inProgressRecipes', JSON.stringify(newIngredCheck));
   };
+
+  // useEffect(() => {
+  //   const ingredCheckString = JSON.stringify(ingredCheck);
+  //   localStorage.setItem('inProgressRecipes', ingredCheckString);
+  // }, [ingredCheck]);
 
   return (
     <div>
@@ -106,6 +123,7 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
               name={ ingAndMeasure[0] }
               type="checkbox"
               onClick={ handleCheckClick }
+              checked={ ingredCheck[ingAndMeasure[0]] }
             />
           </label>
         </div>
