@@ -88,16 +88,6 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
     setAllChecked(allTrue);
   }, [ingredCheck]);
 
-  const getDate = () => {
-    // FONTE: https://horadecodar.com.br/2021/04/03/como-pegar-a-data-atual-com-javascript/
-    const data = new Date();
-    const dia = String(data.getDate()).padStart(2, '0');
-    const mes = String(data.getMonth() + 1).padStart(2, '0');
-    const ano = data.getFullYear();
-    const dataAtual = `${ano}-${mes}-${dia}`;
-    return dataAtual;
-  };
-
   const convertRecipeInfo = (recipe) => {
     switch (actualPage) {
     case 'Meal': {
@@ -122,9 +112,9 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
         nationality: '',
         category: recipe.strCategory,
         alcoholicOrNot: recipe.strAlcoholic,
-        name: recipe.srtDrink,
+        name: recipe.strDrink,
         image: recipe.strDrinkThumb,
-        doneDate: getDate(),
+        doneDate: new Date(),
         tags: recipe.strTags ? recipe.strTags : [],
       };
       return recipeToSave;
@@ -145,6 +135,7 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
       history.push('/done-recipes');
     } else {
       localStorage.setItem('doneRecipes', JSON.stringify([recipeToSave]));
+      history.push('/done-recipes');
     }
   };
 
