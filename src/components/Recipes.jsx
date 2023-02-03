@@ -67,7 +67,6 @@ function Recipes({ pageSubject }) {
       case 'Drink': {
         const recipesByCategory = await infoDrinkRequest({
           key: 'categoryFilter', search: value });
-        console.log(recipesByCategory);
         setRecipes(recipesByCategory);
       }
         break;

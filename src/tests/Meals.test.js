@@ -1,13 +1,23 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 
 import { renderWith } from './helpers/renderWith';
 
 import { fetchMock } from './mock/fetchMock';
-import { ALL_CATEGORIES_FOODS, FOODS } from './mock/mockFoodAPI';
+import { ALL_CATEGORIES_FOODS, FOODS, FILTERED_BY_CATEGORY_FOODS } from './mock/mockFoodAPI';
 
 import Meals from '../pages/Meals';
+
+async function clickOnCategory() {
+  const { strCategory } = ALL_CATEGORIES_FOODS.meals[4];
+
+  const goatButton = await screen.findByTestId(`${strCategory}-category-filter`);
+
+  act(() => {
+    userEvent.click(goatButton);
+  });
+}
 
 describe('Sequência de testes relacionadas à página <App />', () => {
   beforeEach(() => {
@@ -100,23 +110,35 @@ describe('Sequência de testes relacionadas à página <App />', () => {
     });
   });
 
-  test('Verifica se ao clicar em uma categoria os itens daquela categoria são renderizados na tela', async () => {
+  test('Verifica se ao clicar em uma categoria a função fetch é chamada com o a url correta', async () => {
     renderWith(<Meals />, ['/meals']);
-    const categoryName = ALL_CATEGORIES_FOODS.meals[4].strCategory;
+
     const urlGoat = 'https://www.themealdb.com/api/json/v1/1/filter.php?c=Goat';
 
-    const goatButton = screen.findByTestId(`${categoryName}-category-filter`);
-
-    expect(await goatButton).toBeInTheDocument();
-
-    act(async () => {
-      userEvent.click(await goatButton);
-    });
+    await clickOnCategory();
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalled();
       expect(fetch).toHaveBeenCalledTimes(3);
       expect(fetch).toHaveBeenCalledWith(urlGoat);
     });
+  });
+
+  test('Verifica se ao clicar em uma categoria os itens daquela categoria são renderizados na tela', async () => {
+    renderWith(<Meals />, ['/meals']);
+
+    const { strMeal, strMealThumb } = FILTERED_BY_CATEGORY_FOODS.meals[0];
+
+    const imgElement = await screen.findByTestId('10-card-img');
+
+    await clickOnCategory()
+      .then(() => waitForElementToBeRemoved(screen.getByTestId('10-card-img')))
+      .then(() => expect(screen.getByTestId('10-card-img')).not.toBeInTheDocument());
+
+    // expect(eachCardElement).toBeInTheDocument();
+    // expect(imgElement).toBeInTheDocument();
+    // expect(nameElement).toBeInTheDocument();
+    // expect(imgElement).toHaveAttribute('src', strMealThumb);
+    // expect(nameElement).toHaveTextContent(strMeal);
   });
 });
