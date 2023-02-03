@@ -19,33 +19,10 @@ async function clickOnCategory() {
   });
 }
 
-describe('Sequência de testes relacionadas à página <App />', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn(fetchMock);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test('Verifica se é realizada uma consulta à API com a url correta', async () => {
-    renderWith(<Meals />, ['/meals']);
-
-    const firstEndPoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    const secondEndPoint = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
-
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalled();
-      expect(fetch).toHaveBeenCalledTimes(2);
-      expect(fetch).toHaveBeenCalledWith(firstEndPoint);
-      expect(fetch).toHaveBeenLastCalledWith(secondEndPoint);
-    });
-  });
+describe('Sequência de testes relacionadas à renderização de elementos da página <Meals />', () => {
+  beforeEach(() => { global.fetch = jest.fn(fetchMock); renderWith(<Meals />, ['/meals']); });
 
   test('Verifica se os elementos html do componente <Header /> são renderizados na página', () => {
-    renderWith(<Meals />, ['/meals']);
-
     const headerElements = [
       screen.getByTestId(/^profile-top-btn$/),
       screen.getByTestId(/^search-top-btn$/),
@@ -58,9 +35,6 @@ describe('Sequência de testes relacionadas à página <App />', () => {
   });
 
   test('Verifica se os elementos do componente <Footer /> são renderizados na página', () => {
-    // Renderizar a página que o componente se encontra
-    renderWith(<Meals />, ['/meals']);
-
     // Capturar os elementos da tela
     const footerElements = [
       screen.getByTestId(/footer/),
@@ -74,9 +48,7 @@ describe('Sequência de testes relacionadas à página <App />', () => {
     });
   });
 
-  test('Verifica se os elementos html do componente <Recipes /> são renderizados na tela', async () => {
-    renderWith(<Meals />, ['/meals']);
-
+  test('Verifica se os elementos do componente <Recipes /> são renderizados na tela', async () => {
     await waitFor(() => {
       const allCategories = screen.getByTestId(/^All-category-filter$/);
       expect(allCategories).toBeInTheDocument();
@@ -110,6 +82,49 @@ describe('Sequência de testes relacionadas à página <App />', () => {
     });
   });
 
+  test('Verifica se ao clicar no ícone de pesquisa são renderizados os elementos do componente <SearchBar />', () => {
+    act(() => {
+      userEvent.click(screen.getByTestId(/^search-top-btn$/));
+    });
+
+    const searchBarElements = [
+      screen.getByTestId(/^search-input$/),
+      screen.getByTestId(/^exec-search-btn$/),
+      screen.getByTestId(/^ingredient-search-radio$/),
+      screen.getByTestId(/^first-letter-search-radio$/),
+      screen.getByTestId(/^name-search-radio$/),
+    ];
+
+    searchBarElements.forEach((eachElement) => {
+      expect(eachElement).toBeInTheDocument();
+    });
+
+    expect(searchBarElements[0]).toHaveValue('');
+    expect(searchBarElements[1]).toHaveTextContent('procurar');
+    expect(searchBarElements[2]).not.toBeChecked();
+    expect(searchBarElements[3]).not.toBeChecked();
+    expect(searchBarElements[4]).not.toBeChecked();
+  });
+});
+
+describe('Sequência de testes relacionadas à interação do usuário com a página <Meals />, e consulta à API', () => {
+  beforeEach(() => { jest.spyOn(global, 'fetch'); global.fetch = jest.fn(fetchMock); });
+
+  afterEach(() => { jest.clearAllMocks(); });
+
+  test('Verifica se é realizada uma consulta à API com a url correta', async () => {
+    renderWith(<Meals />, ['/meals']);
+    const firstEndPoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+    const secondEndPoint = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
+
+    await waitFor(() => {
+      expect(fetch).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalledTimes(2);
+      expect(fetch).toHaveBeenCalledWith(firstEndPoint);
+      expect(fetch).toHaveBeenLastCalledWith(secondEndPoint);
+    });
+  });
+
   test('Verifica se ao clicar em uma categoria a função fetch é chamada com o a url correta', async () => {
     renderWith(<Meals />, ['/meals']);
 
@@ -129,10 +144,8 @@ describe('Sequência de testes relacionadas à página <App />', () => {
 
     const { strMeal, strMealThumb } = FILTERED_BY_CATEGORY_FOODS.meals[0];
 
-    const imgElement = await screen.findByTestId('10-card-img');
-
     await clickOnCategory();
-    await waitForElementToBeRemoved(imgElement);
+    await waitForElementToBeRemoved(screen.queryByTestId('10-card-img'));
 
     const cardElement = screen.getByTestId('0-recipe-card');
     const imgTwoElement = screen.getByTestId('0-card-img');
