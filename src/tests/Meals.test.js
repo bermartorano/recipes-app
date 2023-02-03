@@ -131,14 +131,17 @@ describe('Sequência de testes relacionadas à página <App />', () => {
 
     const imgElement = await screen.findByTestId('10-card-img');
 
-    await clickOnCategory()
-      .then(() => waitForElementToBeRemoved(screen.getByTestId('10-card-img')))
-      .then(() => expect(screen.getByTestId('10-card-img')).not.toBeInTheDocument());
+    await clickOnCategory();
+    await waitForElementToBeRemoved(imgElement);
 
-    // expect(eachCardElement).toBeInTheDocument();
-    // expect(imgElement).toBeInTheDocument();
-    // expect(nameElement).toBeInTheDocument();
-    // expect(imgElement).toHaveAttribute('src', strMealThumb);
-    // expect(nameElement).toHaveTextContent(strMeal);
+    const cardElement = screen.getByTestId('0-recipe-card');
+    const imgTwoElement = screen.getByTestId('0-card-img');
+    const nameElement = screen.getByTestId('0-card-name');
+
+    expect(cardElement).toBeInTheDocument();
+    expect(imgTwoElement).toBeInTheDocument();
+    expect(nameElement).toBeInTheDocument();
+    expect(imgTwoElement).toHaveAttribute('src', strMealThumb);
+    expect(nameElement).toHaveTextContent(strMeal);
   });
 });
