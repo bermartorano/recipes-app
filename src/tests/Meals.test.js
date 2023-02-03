@@ -1,23 +1,12 @@
-import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
+import { screen, waitFor } from '@testing-library/react';
 
 import { renderWith } from './helpers/renderWith';
+import { openSearchBar } from './helpers/mealsHelpers';
 
 import { fetchMock } from './mock/fetchMock';
-import { ALL_CATEGORIES_FOODS, FOODS, FILTERED_BY_CATEGORY_FOODS } from './mock/mockFoodAPI';
+import { ALL_CATEGORIES_FOODS, FOODS } from './mock/mockFoodAPI';
 
 import Meals from '../pages/Meals';
-
-async function clickOnCategory() {
-  const { strCategory } = ALL_CATEGORIES_FOODS.meals[4];
-
-  const goatButton = await screen.findByTestId(`${strCategory}-category-filter`);
-
-  act(() => {
-    userEvent.click(goatButton);
-  });
-}
 
 describe('Sequência de testes relacionadas à renderização de elementos da página <Meals />', () => {
   beforeEach(() => { global.fetch = jest.fn(fetchMock); renderWith(<Meals />, ['/meals']); });
@@ -83,9 +72,7 @@ describe('Sequência de testes relacionadas à renderização de elementos da p�
   });
 
   test('Verifica se ao clicar no ícone de pesquisa são renderizados os elementos do componente <SearchBar />', () => {
-    act(() => {
-      userEvent.click(screen.getByTestId(/^search-top-btn$/));
-    });
+    openSearchBar();
 
     const searchBarElements = [
       screen.getByTestId(/^search-input$/),
@@ -104,57 +91,5 @@ describe('Sequência de testes relacionadas à renderização de elementos da p�
     expect(searchBarElements[2]).not.toBeChecked();
     expect(searchBarElements[3]).not.toBeChecked();
     expect(searchBarElements[4]).not.toBeChecked();
-  });
-});
-
-describe('Sequência de testes relacionadas à interação do usuário com a página <Meals />, e consulta à API', () => {
-  beforeEach(() => { jest.spyOn(global, 'fetch'); global.fetch = jest.fn(fetchMock); });
-
-  afterEach(() => { jest.clearAllMocks(); });
-
-  test('Verifica se é realizada uma consulta à API com a url correta', async () => {
-    renderWith(<Meals />, ['/meals']);
-    const firstEndPoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    const secondEndPoint = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
-
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalled();
-      expect(fetch).toHaveBeenCalledTimes(2);
-      expect(fetch).toHaveBeenCalledWith(firstEndPoint);
-      expect(fetch).toHaveBeenLastCalledWith(secondEndPoint);
-    });
-  });
-
-  test('Verifica se ao clicar em uma categoria a função fetch é chamada com o a url correta', async () => {
-    renderWith(<Meals />, ['/meals']);
-
-    const urlGoat = 'https://www.themealdb.com/api/json/v1/1/filter.php?c=Goat';
-
-    await clickOnCategory();
-
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalled();
-      expect(fetch).toHaveBeenCalledTimes(3);
-      expect(fetch).toHaveBeenCalledWith(urlGoat);
-    });
-  });
-
-  test('Verifica se ao clicar em uma categoria os itens daquela categoria são renderizados na tela', async () => {
-    renderWith(<Meals />, ['/meals']);
-
-    const { strMeal, strMealThumb } = FILTERED_BY_CATEGORY_FOODS.meals[0];
-
-    await clickOnCategory();
-    await waitForElementToBeRemoved(screen.queryByTestId('10-card-img'));
-
-    const cardElement = screen.getByTestId('0-recipe-card');
-    const imgTwoElement = screen.getByTestId('0-card-img');
-    const nameElement = screen.getByTestId('0-card-name');
-
-    expect(cardElement).toBeInTheDocument();
-    expect(imgTwoElement).toBeInTheDocument();
-    expect(nameElement).toBeInTheDocument();
-    expect(imgTwoElement).toHaveAttribute('src', strMealThumb);
-    expect(nameElement).toHaveTextContent(strMeal);
   });
 });

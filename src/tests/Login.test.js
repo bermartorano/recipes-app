@@ -1,33 +1,12 @@
-import { screen } from '@testing-library/react';
-
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 
 import { renderWith } from './helpers/renderWith';
+import { captureScreenElements, fillInputs } from './helpers/mealsHelpers';
 
 import { fetchMock } from './mock/fetchMock';
 
 import { Login } from '../services/pagesExports';
-
-function captureScreenElements() {
-  return {
-    head: screen.getByRole('heading', { level: 1, name: /login/i }),
-    email: screen.getByTestId('email-input'),
-    password: screen.getByTestId('password-input'),
-    button: screen.getByTestId('login-submit-btn'),
-
-  };
-}
-
-function fillInputs(emailText, passwordText) {
-  const { email, password } = captureScreenElements();
-  act(() => {
-    userEvent.clear(email);
-    userEvent.clear(password);
-    userEvent.type(email, emailText);
-    userEvent.type(password, passwordText);
-  });
-}
 
 describe('Testa o componente <Login />', () => {
   beforeEach(() => {
