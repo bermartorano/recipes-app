@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { RecipesContext } from '../context/RecipesProvider';
 import { infoDrinkRequest } from '../services/drinkAPI';
 import { infoFoodRequest } from '../services/foodAPI';
 
 export default function RecipeDetails({ match: { url, params: { id } } }) {
   const actualPage = (url.includes('meals')) ? 'Meal' : 'Drink';
+
+  const {
+    recipes:
+    { [`${actualPage.toLocaleLowerCase()}s`]: recipesArray },
+  } = useContext(RecipesContext);
 
   const [recipeInfo, setRecipeInfo] = useState({});
 
@@ -23,7 +29,11 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
   };
 
   useEffect(() => {
-    fetchRecipe();
+    if (recipesArray.length === 1) {
+      setRecipeInfo(recipesArray[0]);
+    } else {
+      fetchRecipe();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

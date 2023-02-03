@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 
 import { renderWith } from './helpers/renderWith';
-import { openSearchBar } from './helpers/mealsHelpers';
+import { openSearchBar } from './helpers/interactionHelpers';
 
 import { fetchMock } from './mock/fetchMock';
 import { ALL_CATEGORIES_FOODS, FOODS } from './mock/mockFoodAPI';

@@ -1,7 +1,8 @@
 import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { renderWith } from './helpers/renderWith';
-import { clickOnCategory, logIn, openSearchBar, searchOnSearchBar } from './helpers/mealsHelpers';
+import { clickOnCategory, logIn, openSearchBar, searchOnSearchBar } from './helpers/interactionHelpers';
 
 import { fetchMock } from './mock/fetchMock';
 import { FILTERED_BY_CATEGORY_FOODS, FILTERED_BY_NAME_FOODS } from './mock/mockFoodAPI';
@@ -121,10 +122,35 @@ describe('Verifica funcionalidades de roteamento dos componentes da página <Mea
   test('Verifica se quando retornar, da consulta à API, apenas um resultado o usuário é redirecionado', async () => {
     const { history } = renderWith(<App />);
     logIn();
+    const category = await screen.findByTestId(/^Beef-category-filter$/);
+    expect(category).toBeInTheDocument();
     openSearchBar();
     searchOnSearchBar('y', /^first-letter-search-radio$/);
 
-    expect(await screen.findByTestId(/^recipe-title$/)).toBeInTheDocument();
-    expect(history.location.pathname).toBe('/meals/52871');
+    await waitFor(() => {
+      expect(screen.getByTestId(/^recipe-title$/)).toBeInTheDocument();
+      expect(history.location.pathname).toBe('/meals/52871');
+    });
   });
+
+  test('Verifica se ao clicar nos elementos do <Footer /> a página é redirecionada', () => {
+    const { history } = renderWith(<Meals />, ['/meals']);
+
+    const drinkIcon = screen.getByTestId(/^drinks-bottom-btn$/);
+    const mealIcon = screen.getByTestId(/^meals-bottom-btn$/);
+
+    userEvent.click(drinkIcon);
+
+    expect(history.location.pathname).toBe('/drinks');
+
+    userEvent.click(mealIcon);
+
+    expect(history.location.pathname).toBe('/meals');
+  });
+
+  // test.skip('Verifica se ao clicar em algum dos cards da página de receitas o usuário é redirecionado para a rota correta', async () => {
+  //   const { history } = renderWith(<Meals />, ['/meals']);
+  //   const cardRecipe = await screen.findAllByRole(/presentation/);
+  //   userEvent.click(cardRecipe[])
+  // });
 });

@@ -9,6 +9,7 @@ import { FILTERED_BY_INGREDIENT_FOODS, FILTERED_BY_LETTER_FOODS,
 function verifyKey(defaultUrl, receivedUrl, checkerObject) {
   const key = Object.keys(checkerObject)
     .find((keyNumber) => `${defaultUrl}${keyNumber}` === receivedUrl);
+  console.log(key);
   return INGREDIENTS_DRINKS_IDS[key];
 }
 
