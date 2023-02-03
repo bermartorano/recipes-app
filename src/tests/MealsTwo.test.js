@@ -2,13 +2,14 @@ import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/rea
 import userEvent from '@testing-library/user-event';
 
 import { renderWith } from './helpers/renderWith';
-import { clickOnCategory, logIn, openSearchBar, searchOnSearchBar } from './helpers/interactionHelpers';
+import { clickOnCategory, openSearchBar, searchOnSearchBar } from './helpers/interactionHelpers';
 
 import { fetchMock } from './mock/fetchMock';
 import { FILTERED_BY_CATEGORY_FOODS, FILTERED_BY_NAME_FOODS } from './mock/mockFoodAPI';
 
 import Meals from '../pages/Meals';
-import App from '../App';
+
+const className = '.card-recipe';
 
 describe('Sequência de testes relacionadas à interação do usuário com a página <Meals />, e consulta à API', () => {
   beforeEach(() => {
@@ -66,7 +67,7 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
     searchOnSearchBar('taco', /^name-search-radio$/);
 
     await waitFor(() => {
-      const allCardsByClass = document.querySelectorAll('.card-recipe');
+      const allCardsByClass = document.querySelectorAll(className);
 
       expect(allCardsByClass).toHaveLength(FILTERED_BY_NAME_FOODS.meals.length);
 
@@ -109,7 +110,7 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
     expect(imgTwoElement).toHaveAttribute('src', strMealThumb);
     expect(nameElement).toHaveTextContent(strMeal);
 
-    const allCardsByClass = document.querySelectorAll('.card-recipe');
+    const allCardsByClass = document.querySelectorAll(className);
     expect(allCardsByClass).toHaveLength(1);
   });
 });
@@ -120,17 +121,27 @@ describe('Verifica funcionalidades de roteamento dos componentes da página <Mea
   afterEach(() => { jest.clearAllMocks(); });
 
   test('Verifica se quando retornar, da consulta à API, apenas um resultado o usuário é redirecionado', async () => {
-    const { history } = renderWith(<App />);
-    logIn();
-    const category = await screen.findByTestId(/^Beef-category-filter$/);
-    expect(category).toBeInTheDocument();
+    const { history } = renderWith(<Meals />, ['/meals']);
+
+    await screen.findByTestId(/^Beef-category-filter$/);
+
     openSearchBar();
     searchOnSearchBar('y', /^first-letter-search-radio$/);
 
     await waitFor(() => {
-      expect(screen.getByTestId(/^recipe-title$/)).toBeInTheDocument();
       expect(history.location.pathname).toBe('/meals/52871');
     });
+  });
+
+  test('Verifica se ao clicar em algum dos cards da página de receitas o usuário é redirecionado para a rota correta', async () => {
+    const { history } = renderWith(<Meals />, ['/meals']);
+    await waitFor(() => {
+      const allCardsByClass = document.querySelectorAll(className);
+      expect(allCardsByClass).toHaveLength(12);
+      userEvent.click(allCardsByClass[3]);
+    });
+
+    await waitFor(() => { expect(history.location.pathname).toBe('/meals/52871'); });
   });
 
   test('Verifica se ao clicar nos elementos do <Footer /> a página é redirecionada', () => {
@@ -147,10 +158,4 @@ describe('Verifica funcionalidades de roteamento dos componentes da página <Mea
 
     expect(history.location.pathname).toBe('/meals');
   });
-
-  // test.skip('Verifica se ao clicar em algum dos cards da página de receitas o usuário é redirecionado para a rota correta', async () => {
-  //   const { history } = renderWith(<Meals />, ['/meals']);
-  //   const cardRecipe = await screen.findAllByRole(/presentation/);
-  //   userEvent.click(cardRecipe[])
-  // });
 });
