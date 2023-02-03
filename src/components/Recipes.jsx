@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { RecipesContext } from '../context/RecipesProvider';
@@ -11,9 +11,9 @@ import { infoDrinkRequest } from '../services/drinkAPI';
 function Recipes({ pageSubject }) {
   const { recipes, setRecipes } = useContext(RecipesContext);
 
-  const history = useHistory();
+  // const history = useHistory();
   const [categories, setCategories] = useState([]);
-  const [categoryFilterOn, setCategoryFilterOn] = useState(false);
+  // const [categoryFilterOn, setCategoryFilterOn] = useState(false);
   const recipesKeyText = `${pageSubject.toLowerCase()}s`;
   const { [recipesKeyText]: recipesKey } = recipes;
   const maxRecipesToRender = 12;
@@ -51,38 +51,38 @@ function Recipes({ pageSubject }) {
   const handleCategoryClick = async ({ target }) => {
     const { value } = target;
 
-    if (categoryFilterOn) {
-      initialRecipes();
-      setCategoryFilterOn(false);
-    } else {
-      setCategoryFilterOn(true);
-      switch (pageSubject) {
-      case 'Meal': {
-        const recipesByCategory = await infoFoodRequest({
-          key: 'categoryFilter', search: value });
-        setRecipes(recipesByCategory);
-      }
-        break;
-
-      case 'Drink': {
-        const recipesByCategory = await infoDrinkRequest({
-          key: 'categoryFilter', search: value });
-        setRecipes(recipesByCategory);
-      }
-        break;
-      default:
-      }
+    // if (categoryFilterOn) {
+    //   initialRecipes();
+    //   // setCategoryFilterOn(false);
+    // } else {
+    // setCategoryFilterOn(true);
+    switch (pageSubject) {
+    case 'Meal': {
+      const recipesByCategory = await infoFoodRequest({
+        key: 'categoryFilter', search: value });
+      setRecipes({ ...recipes, meals: [...recipesByCategory.meals] });
     }
+      break;
+
+    case 'Drink': {
+      const recipesByCategory = await infoDrinkRequest({
+        key: 'categoryFilter', search: value });
+      setRecipes({ ...recipes, drinks: [...recipesByCategory.drinks] });
+    }
+      break;
+    default:
+    }
+    // }
   };
 
   const handleClearFilters = async () => {
     initialRecipes();
   };
 
-  const handleCardClick = (id) => {
-    const pageTitle = `${pageSubject.toLowerCase()}s`;
-    history.push(`/${pageTitle}/${id}`);
-  };
+  // const handleCardClick = (id) => {
+  //   const pageTitle = `${pageSubject.toLowerCase()}s`;
+  //   history.push(`/${pageTitle}/${id}`);
+  // };
 
   return (
     <div>
@@ -108,16 +108,14 @@ function Recipes({ pageSubject }) {
       </div>
       {recipesToRender.map((rec, index) => (
         <div
-          role="presentation"
           className="card-recipe"
           key={ index }
-          onClick={ () => handleCardClick(rec[`id${pageSubject}`]) }
-          onKeyDown={ () => handleCardClick(rec[`id${pageSubject}`]) }
         >
           <RecipeCard
             index={ index }
             recipeName={ rec[`str${pageSubject}`] }
             imgSrc={ rec[`str${pageSubject}Thumb`] }
+            url={ `/${recipesKeyText}/${rec[`id${pageSubject}`]}` }
           />
         </div>
       ))}

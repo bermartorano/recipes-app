@@ -50,7 +50,7 @@ export default function SearchBar({ titleToFetch }) {
         alert('Sorry, we haven\'t found any recipes for these filters.');
         break;
       }
-      setRecipes(mealsFetched);
+      setRecipes({ ...recipes, meals: [...mealsFetched.meals] });
     }
       break;
 
@@ -65,7 +65,7 @@ export default function SearchBar({ titleToFetch }) {
         alert('Sorry, we haven\'t found any recipes for these filters.');
         break;
       }
-      setRecipes(drinksFetched);
+      setRecipes({ ...recipes, drinks: [...drinksFetched.drinks] });
     }
 
       break;

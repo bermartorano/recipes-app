@@ -136,9 +136,8 @@ describe('Verifica funcionalidades de roteamento dos componentes da página <Mea
   test('Verifica se ao clicar em algum dos cards da página de receitas o usuário é redirecionado para a rota correta', async () => {
     const { history } = renderWith(<Meals />, ['/meals']);
     await waitFor(() => {
-      const allCardsByClass = document.querySelectorAll(className);
-      expect(allCardsByClass).toHaveLength(12);
-      userEvent.click(allCardsByClass[3]);
+      const cardElement = screen.queryByTestId('3-recipe-card');
+      userEvent.click(cardElement);
     });
 
     await waitFor(() => { expect(history.location.pathname).toBe('/meals/52871'); });
