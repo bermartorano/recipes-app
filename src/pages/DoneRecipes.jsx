@@ -11,7 +11,11 @@ function DoneRecipes() {
       <button type="button" data-testid="filter-by-meal-btn">Meals</button>
       <button type="button" data-testid="filter-by-drink-btn">Drinks</button>
       { doneRecipes && doneRecipes.map((rcp, index) => (
-        <DoneRecipeCard key={ rcp.id } recipe={ rcp } index={ index } />))}
+        <DoneRecipeCard
+          key={ rcp.id }
+          recipe={ rcp }
+          index={ index }
+        />))}
     </>
   );
 }

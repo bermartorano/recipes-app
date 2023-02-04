@@ -21,7 +21,10 @@ export default function DoneRecipeCard(props) {
   return (
     <div>
       <img src={ image } alt="Recipe" data-testid={ `${index}-horizontal-image` } />
-      <p data-testid={ `${index}-horizontal-top-text` }>{ category }</p>
+      <p data-testid={ `${index}-horizontal-top-text` }>
+        { type === 'meal'
+          ? `${nationality} - ${category}` : `${alcoholicOrNot} - ${category}`}
+      </p>
       <p data-testid={ `${index}-horizontal-name` }>{ name }</p>
       <p data-testid={ `${index}-horizontal-done-date` }>{ doneDate }</p>
       <ShareButton url={ `http://localhost:3000/${type}s/${id}` } index={ index } />
