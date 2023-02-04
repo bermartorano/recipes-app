@@ -10,7 +10,7 @@ import { infoDrinkRequest } from '../services/drinkAPI';
 
 function Recipes({ pageSubject }) {
   const { recipes, setRecipes } = useContext(RecipesContext);
-
+  const [switchSelected, setSwitchButton] = useState('all');
   // const history = useHistory();
   const [categories, setCategories] = useState([]);
   // const [categoryFilterOn, setCategoryFilterOn] = useState(false);
@@ -48,8 +48,12 @@ function Recipes({ pageSubject }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCategoryClick = async ({ target }) => {
-    const { value } = target;
+  const handleCategoryClick = async ({ target: { value } }) => {
+    if (switchSelected === value) {
+      setSwitchButton('all');
+      return initialRecipes();
+    }
+    setSwitchButton(value);
 
     // if (categoryFilterOn) {
     //   initialRecipes();
@@ -60,22 +64,21 @@ function Recipes({ pageSubject }) {
     case 'Meal': {
       const recipesByCategory = await infoFoodRequest({
         key: 'categoryFilter', search: value });
-      setRecipes({ ...recipes, meals: [...recipesByCategory.meals] });
+      return setRecipes({ ...recipes, meals: [...recipesByCategory.meals] });
     }
-      break;
 
     case 'Drink': {
       const recipesByCategory = await infoDrinkRequest({
         key: 'categoryFilter', search: value });
-      setRecipes({ ...recipes, drinks: [...recipesByCategory.drinks] });
+      return setRecipes({ ...recipes, drinks: [...recipesByCategory.drinks] });
     }
-      break;
     default:
     }
     // }
   };
 
   const handleClearFilters = async () => {
+    setSwitchButton('all');
     initialRecipes();
   };
 
@@ -87,24 +90,39 @@ function Recipes({ pageSubject }) {
   return (
     <div>
       <div>
-        {categories.slice(0, maxCategoriesToRender).map((cat, index) => (
-          <button
-            type="button"
-            key={ index }
-            data-testid={ `${cat.strCategory}-category-filter` }
-            onClick={ handleCategoryClick }
-            value={ cat.strCategory }
-          >
-            {`${cat.strCategory}`}
-          </button>
-        ))}
-        <button
+        {
+          categories.slice(0, maxCategoriesToRender).map(({ strCategory }, index) => (
+            <label htmlFor={ `switch-${index}` } key={ index }>
+              <input
+                type="checkbox"
+                id={ `switch-${index}` }
+                data-testid={ `${strCategory}-category-filter` }
+                onChange={ handleCategoryClick }
+                value={ strCategory }
+                checked={ switchSelected === strCategory }
+              />
+              {`${strCategory}`}
+            </label>
+          ))
+        }
+        <label htmlFor="switch-all">
+          <input
+            type="checkbox"
+            id="switch-all"
+            data-testid="All-category-filter"
+            onChange={ handleClearFilters }
+            value="all"
+            checked={ switchSelected === 'all' }
+          />
+          All
+        </label>
+        {/* <button
           type="button"
           data-testid="All-category-filter"
           onClick={ handleClearFilters }
         >
           All
-        </button>
+        </button> */}
       </div>
       {recipesToRender.map((rec, index) => (
         <div

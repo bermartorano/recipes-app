@@ -5,9 +5,9 @@ import { renderWith } from './helpers/renderWith';
 import { clickOnCategory, openSearchBar, searchOnSearchBar } from './helpers/interactionHelpers';
 
 import { fetchMock } from './mock/fetchMock';
-import { FILTERED_BY_CATEGORY_FOODS, FILTERED_BY_NAME_FOODS } from './mock/mockFoodAPI';
+import { ALL_CATEGORIES_DRINKS, FILTERED_BY_CATEGORY_DRINKS, FILTERED_BY_NAME_DRINKS } from './mock/mockDrinkAPI';
 
-import Meals from '../pages/Meals';
+import Drinks from '../pages/Drinks';
 
 const className = '.card-recipe';
 
@@ -15,14 +15,14 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
   beforeEach(() => {
     jest.spyOn(global, 'fetch'); global.fetch = jest.fn(fetchMock);
 
-    renderWith(<Meals />, ['/meals']); openSearchBar();
+    renderWith(<Drinks />, ['/drinks']); openSearchBar();
   });
 
   afterEach(() => { jest.clearAllMocks(); });
 
   test('Verifica se é realizada uma consulta à API com a url correta', async () => {
-    const firstEndPoint = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    const secondEndPoint = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
+    const firstEndPoint = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+    const secondEndPoint = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalled();
@@ -34,15 +34,15 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
 
   // funcionalidades do componente <SearchBar />
   test('Verifica se ao interagir com a barra de pesquisar as urls corretas são chamadas', async () => {
-    searchOnSearchBar('taco', /^name-search-radio$/);
+    searchOnSearchBar('rum', /^name-search-radio$/);
     searchOnSearchBar('y', /^first-letter-search-radio$/);
-    searchOnSearchBar('salmon', /^ingredient-search-radio$/);
+    searchOnSearchBar('rum', /^ingredient-search-radio$/);
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledTimes(5);
-      expect(fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?s=taco');
-      expect(fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/search.php?f=y');
-      expect(fetch).toHaveBeenCalledWith('https://www.themealdb.com/api/json/v1/1/filter.php?i=salmon');
+      expect(fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=rum');
+      expect(fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/search.php?f=y');
+      expect(fetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=rum');
     });
   });
 
@@ -64,28 +64,28 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
   });
 
   test('Verifica se são renderizados os elementos na para uma das opções de busca', async () => {
-    searchOnSearchBar('taco', /^name-search-radio$/);
+    searchOnSearchBar('rum', /^name-search-radio$/);
 
     await waitFor(() => {
       const allCardsByClass = document.querySelectorAll(className);
 
-      expect(allCardsByClass).toHaveLength(FILTERED_BY_NAME_FOODS.meals.length);
+      expect(allCardsByClass).toHaveLength(FILTERED_BY_NAME_DRINKS.drinks.length);
 
-      FILTERED_BY_NAME_FOODS.meals.forEach(({ strMeal, strMealThumb }, index) => {
+      FILTERED_BY_NAME_DRINKS.drinks.forEach(({ strDrink, strDrinkThumb }, index) => {
         expect(screen.getByTestId(`${index}-card-img`)).toBeInTheDocument();
         expect(screen.getByTestId(`${index}-card-name`)).toBeInTheDocument();
         expect(screen.getByTestId(`${index}-recipe-card`)).toBeInTheDocument();
-        expect(screen.getByTestId(`${index}-card-img`)).toHaveAttribute('src', strMealThumb);
-        expect(screen.getByTestId(`${index}-card-name`)).toHaveTextContent(strMeal);
+        expect(screen.getByTestId(`${index}-card-img`)).toHaveAttribute('src', strDrinkThumb);
+        expect(screen.getByTestId(`${index}-card-name`)).toHaveTextContent(strDrink);
       });
     });
   });
 
   // Funcionalidades do componente <Recipes /> e <RecipesCard />
   test('Verifica se ao clicar em uma categoria a função fetch é chamada com o a url correta', async () => {
-    const urlGoat = 'https://www.themealdb.com/api/json/v1/1/filter.php?c=Goat';
+    const urlGoat = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocoa';
 
-    await clickOnCategory();
+    await clickOnCategory(ALL_CATEGORIES_DRINKS.drinks);
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalled();
@@ -95,9 +95,9 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
   });
 
   test('Verifica se ao clicar em uma categoria os itens daquela categoria são renderizados na tela', async () => {
-    const { strMeal, strMealThumb } = FILTERED_BY_CATEGORY_FOODS.meals[0];
+    const { strDrink, strDrinkThumb } = FILTERED_BY_CATEGORY_DRINKS.drinks[0];
 
-    await clickOnCategory();
+    await clickOnCategory(ALL_CATEGORIES_DRINKS.drinks);
     await waitForElementToBeRemoved(screen.queryByTestId('10-card-img'));
 
     const cardElement = screen.getByTestId('0-recipe-card');
@@ -107,22 +107,22 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
     expect(cardElement).toBeInTheDocument();
     expect(imgTwoElement).toBeInTheDocument();
     expect(nameElement).toBeInTheDocument();
-    expect(imgTwoElement).toHaveAttribute('src', strMealThumb);
-    expect(nameElement).toHaveTextContent(strMeal);
+    expect(imgTwoElement).toHaveAttribute('src', strDrinkThumb);
+    expect(nameElement).toHaveTextContent(strDrink);
 
     const allCardsByClass = document.querySelectorAll(className);
-    expect(allCardsByClass).toHaveLength(1);
+    expect(allCardsByClass).toHaveLength(9);
   });
 
   test('Verifica se ao remover a seleção da categoria a página volta a exibir todas as receitas', async () => {
-    await clickOnCategory();
+    await clickOnCategory(ALL_CATEGORIES_DRINKS.drinks);
 
     await waitFor(() => {
-      expect(document.querySelectorAll(className)).toHaveLength(1);
+      expect(document.querySelectorAll(className)).toHaveLength(9);
       expect(screen.queryByTestId(/^All-category-filter$/)).not.toBeChecked();
     });
 
-    await clickOnCategory();
+    await clickOnCategory(ALL_CATEGORIES_DRINKS.drinks);
 
     await waitFor(() => {
       expect(document.querySelectorAll(className)).toHaveLength(12);
@@ -131,7 +131,7 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
   });
 
   test('Verifica se ao clicar na categoria All todos os elementos voltam a ser exibidos na tela', async () => {
-    await clickOnCategory();
+    await clickOnCategory(ALL_CATEGORIES_DRINKS.drinks);
     userEvent.click(await screen.findByTestId(/^All-category-filter$/));
     await waitFor(() => {
       expect(document.querySelectorAll(className)).toHaveLength(12);

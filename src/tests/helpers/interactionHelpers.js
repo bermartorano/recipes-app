@@ -16,8 +16,8 @@ export function openSearchBar() {
   userEvent.click(screen.getByTestId(/^search-top-btn$/));
 }
 
-export async function clickOnCategory() {
-  const { strCategory } = ALL_CATEGORIES_FOODS.meals[4];
+export async function clickOnCategory(category = ALL_CATEGORIES_FOODS.meals) {
+  const { strCategory } = category[4];
   const goatButton = await screen.findByTestId(`${strCategory}-category-filter`);
   userEvent.click(goatButton);
 }
