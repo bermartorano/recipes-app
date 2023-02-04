@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { infoDrinkRequest } from '../services/drinkAPI';
 import { infoFoodRequest } from '../services/foodAPI';
+import convertRecipeInfo from '../services/convertRecipeToSaveFunc';
+import { FavoriteButton, ShareButton } from '../services/componentsExport';
 
 function RecipeInProgress({ match: { url, params: { id } } }) {
   const [recipeInProgressInfo, setRecipeInProgressInfo] = useState({});
@@ -88,46 +90,8 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
     setAllChecked(allTrue);
   }, [ingredCheck]);
 
-  const convertRecipeInfo = (recipe) => {
-    switch (actualPage) {
-    case 'Meal': {
-      const recipeToSave = {
-        id: recipe.idMeal,
-        type: 'meal',
-        nationality: recipe.strArea,
-        category: recipe.strCategory,
-        alcoholicOrNot: '',
-        name: recipe.strMeal,
-        image: recipe.strMealThumb,
-        doneDate: new Date(),
-        tags: recipe.strTags ? recipe.strTags.split(',') : [],
-      };
-      return recipeToSave;
-    }
-
-    case 'Drink': {
-      const recipeToSave = {
-        id: recipe.idDrink,
-        type: 'drink',
-        nationality: '',
-        category: recipe.strCategory,
-        alcoholicOrNot: recipe.strAlcoholic,
-        name: recipe.strDrink,
-        image: recipe.strDrinkThumb,
-        doneDate: new Date(),
-        tags: recipe.strTags ? recipe.strTags : [],
-      };
-      return recipeToSave;
-    }
-
-    default:
-      break;
-    }
-  };
-
   const handleFinishClick = () => {
-    const recipeToSave = convertRecipeInfo(recipeInProgressInfo);
-    console.log(recipeToSave);
+    const recipeToSave = convertRecipeInfo(recipeInProgressInfo, actualPage);
     const doneRecipesLS = JSON.parse(localStorage.getItem('doneRecipes'));
     if (doneRecipesLS) {
       const newDoneRecipes = [...doneRecipesLS, recipeToSave];
@@ -147,18 +111,12 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
         data-testid="recipe-photo"
       />
       <p data-testid="recipe-title">{ recipeInProgressInfo[`str${actualPage}`] }</p>
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        Compartilhar
-      </button>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-      >
-        Favoritar
-      </button>
+      <ShareButton url={ `http://localhost:3000/${actualPage.toLowerCase()}s/${id}` } />
+      <FavoriteButton
+        recipe={ recipeInProgressInfo }
+        recipeId={ id }
+        mealOrDrink={ actualPage }
+      />
       <p data-testid="recipe-category">
         { recipeInProgressInfo.strCategory }
       </p>
