@@ -22,13 +22,16 @@ function Recipes({ pageSubject }) {
   const initialRecipes = async () => {
     const initialRecipesFetched = await fetchRecipe(page)();
     setRecipes({ ...recipes, [page]: [...initialRecipesFetched] });
+  };
 
+  const initialCategories = async () => {
     const categoriesFetch = await fetchRecipe(page)({ key: 'categories', search: '' });
     setCategories(categoriesFetch);
   };
 
   useEffect(() => {
     initialRecipes();
+    initialCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -37,10 +40,9 @@ function Recipes({ pageSubject }) {
 
     if (switchSelected === value) {
       setSwitchButton('all');
-      initialRecipes();
-    } else {
-      setSwitchButton(value);
+      return initialRecipes();
     }
+    setSwitchButton(value);
 
     const recipesByCategory = await fetchRecipe(page)({
       key: 'categoryFilter', search: value });
