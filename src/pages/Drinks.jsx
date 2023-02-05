@@ -6,7 +6,7 @@ function Drinks() {
   return (
     <>
       <Header title="Drinks" hasSearchIcon />
-      <Recipes pageSubject="Drink" />
+      <Recipes pageSubject="drinks" />
       <Footer />
     </>
   );

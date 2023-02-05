@@ -6,7 +6,7 @@ function Meals() {
   return (
     <>
       <Header title="Meals" hasSearchIcon />
-      <Recipes pageSubject="Meal" />
+      <Recipes pageSubject="meals" />
       <Footer />
     </>
   );

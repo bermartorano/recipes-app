@@ -1,45 +1,38 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { RecipesContext } from '../context/RecipesProvider';
-import { infoDrinkRequest } from '../services/drinkAPI';
-import { infoFoodRequest } from '../services/foodAPI';
+
+import { fetchRecipe, pageChecker, pageReferences } from '../services/helperCorrectPage';
 
 export default function RecipeDetails({ match: { url, params: { id } } }) {
-  const actualPage = (url.includes('meals')) ? 'Meal' : 'Drink';
+  const actualPage = pageChecker(url);
 
-  const {
-    recipes:
-    { [`${actualPage.toLocaleLowerCase()}s`]: recipesArray },
-  } = useContext(RecipesContext);
+  const [recipe, setRecipe] = useState({});
 
-  const [recipeInfo, setRecipeInfo] = useState({});
+  const { page, thumb, title } = pageReferences(actualPage[0]);
 
-  const fetchRecipe = async () => {
-    const optionsToFetch = {
-      Meal: async () => {
-        const { meals } = await infoFoodRequest({ key: 'recipeId', search: id });
-        setRecipeInfo(meals[0]);
-      },
-      Drink: async () => {
-        const { drinks } = await infoDrinkRequest({ key: 'recipeId', search: id });
-        setRecipeInfo(drinks[0]);
-      },
-    };
-    optionsToFetch[actualPage]();
-  };
+  const { recipes: { [page]: recipesArray } } = useContext(RecipesContext);
 
   useEffect(() => {
+    async function fetchReturn() {
+      const recipeToRender = await fetchRecipe(page)({
+        key: 'recipeId', search: id });
+      console.log(recipeToRender);
+      setRecipe(recipeToRender[0]);
+    }
+
     if (recipesArray.length === 1) {
-      setRecipeInfo(recipesArray[0]);
+      setRecipe(recipesArray[0]);
     } else {
-      fetchRecipe();
+      fetchReturn();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { strCategory, strInstructions, strYoutube } = recipeInfo;
+  const { strCategory, strInstructions, strYoutube } = recipe;
 
-  const ingredientes = Object.entries(recipeInfo)
+  const ingredientes = Object.entries(recipe)
     .reduce((arrayOfElements, [key, value], index) => (
       (key.startsWith('strIngredient') && !!value)
         ? [...arrayOfElements, (
@@ -47,26 +40,26 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
             key={ `strIngredient-${index}` }
             data-testid={ `${arrayOfElements.length}-ingredient-name-and-measure` }
           >
-            { `${value} - ${recipeInfo[`strMeasure${arrayOfElements.length + 1}`]}` }
+            { `${value} - ${recipe[`strMeasure${arrayOfElements.length + 1}`]}` }
           </li>)]
         : arrayOfElements), []);
 
   return (
     <main>
-      <h3 data-testid="recipe-title">{ recipeInfo[`str${actualPage}`] }</h3>
+      <h3 data-testid="recipe-title">{ recipe[title] }</h3>
       {
-        (actualPage === 'Drink' && recipeInfo.strAlcoholic === 'Alcoholic')
+        (page === 'drinks' && recipe.strAlcoholic === 'Alcoholic')
           ? (
             <p
               data-testid="recipe-category"
             >
-              { `${strCategory} - ${recipeInfo.strAlcoholic}` }
+              { `${strCategory} - ${recipe.strAlcoholic}` }
             </p>
           )
           : <p data-testid="recipe-category">{ strCategory }</p>
       }
       <img
-        src={ recipeInfo[`str${actualPage}Thumb`] }
+        src={ recipe[thumb] }
         alt="Recipe"
         data-testid="recipe-photo"
       />

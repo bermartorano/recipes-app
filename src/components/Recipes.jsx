@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { RecipesContext } from '../context/RecipesProvider';
+
 import RecipeCard from './RecipeCard';
 
-import { infoFoodRequest } from '../services/foodAPI';
-import { infoDrinkRequest } from '../services/drinkAPI';
+import { fetchRecipe, pageChecker, pageReferences } from '../services/helperCorrectPage';
 
 function Recipes({ pageSubject }) {
   const { recipes, setRecipes } = useContext(RecipesContext);
@@ -13,33 +13,18 @@ function Recipes({ pageSubject }) {
 
   const [categories, setCategories] = useState([]);
 
-  const recipesKeyText = `${pageSubject.toLowerCase()}s`;
-  const { [recipesKeyText]: recipesKey } = recipes;
+  const { page, id, title, thumb } = pageReferences(pageChecker(pageSubject)[0]);
+
   const maxRecipesToRender = 12;
   const maxCategoriesToRender = 5;
-  const recipesToRender = recipesKey.slice(0, maxRecipesToRender);
+  const recipesToRender = recipes[page].slice(0, maxRecipesToRender);
 
   const initialRecipes = async () => {
-    switch (pageSubject) {
-    case 'Meal': {
-      const initialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
-      const categoriesFetch = await infoFoodRequest({ key: 'categories', search: '' });
-      const categoriesArray = [...categoriesFetch.meals];
-      setCategories(categoriesArray);
-      setRecipes({ ...recipes, meals: [...initialMealsFetched.meals] });
-      break;
-    }
+    const initialRecipesFetched = await fetchRecipe(page)();
+    setRecipes({ ...recipes, [page]: [...initialRecipesFetched] });
 
-    case 'Drink': {
-      const inicialDrinksFetched = await infoDrinkRequest({ key: 'name', search: '' });
-      const categoriesFetch = await infoDrinkRequest({ key: 'categories', search: '' });
-      const categoriesArray = [...categoriesFetch.drinks];
-      setCategories(categoriesArray);
-      setRecipes({ ...recipes, drinks: [...inicialDrinksFetched.drinks] });
-    }
-      break;
-    default:
-    }
+    const categoriesFetch = await fetchRecipe(page)({ key: 'categories', search: '' });
+    setCategories(categoriesFetch);
   };
 
   useEffect(() => {
@@ -57,20 +42,9 @@ function Recipes({ pageSubject }) {
       setSwitchButton(value);
     }
 
-    switch (pageSubject) {
-    case 'Meal': {
-      const recipesByCategory = await infoFoodRequest({
-        key: 'categoryFilter', search: value });
-      return setRecipes({ ...recipes, meals: [...recipesByCategory.meals] });
-    }
-
-    case 'Drink': {
-      const recipesByCategory = await infoDrinkRequest({
-        key: 'categoryFilter', search: value });
-      return setRecipes({ ...recipes, drinks: [...recipesByCategory.drinks] });
-    }
-    default:
-    }
+    const recipesByCategory = await fetchRecipe(page)({
+      key: 'categoryFilter', search: value });
+    setRecipes({ ...recipes, [page]: [...recipesByCategory] });
   };
 
   function handleClearFilters() {
@@ -114,9 +88,9 @@ function Recipes({ pageSubject }) {
         >
           <RecipeCard
             index={ index }
-            recipeName={ rec[`str${pageSubject}`] }
-            imgSrc={ rec[`str${pageSubject}Thumb`] }
-            url={ `/${recipesKeyText}/${rec[`id${pageSubject}`]}` }
+            recipeName={ rec[title] }
+            imgSrc={ rec[thumb] }
+            url={ `/${page}/${rec[id]}` }
           />
         </div>
       ))}

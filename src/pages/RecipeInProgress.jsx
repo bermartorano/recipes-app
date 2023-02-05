@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { infoDrinkRequest } from '../services/drinkAPI';
-import { infoFoodRequest } from '../services/foodAPI';
+
 import convertRecipeInfo from '../services/convertRecipeToSaveFunc';
+import { fetchRecipe, pageChecker, pageReferences } from '../services/helperCorrectPage';
+
 import { FavoriteButton, ShareButton } from '../services/componentsExport';
 
 function RecipeInProgress({ match: { url, params: { id } } }) {
@@ -14,27 +15,15 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
   const history = useHistory();
   const actualPage = (url.includes('meals')) ? 'Meal' : 'Drink';
 
-  const fetchRecipe = async () => {
-    switch (actualPage) {
-    case 'Meal': {
-      const recipe = await infoFoodRequest({ key: 'recipeId', search: id });
-      setRecipeInProgressInfo(recipe.meals[0]);
-    }
-      break;
+  const { page, thumb } = pageReferences(pageChecker(url)[0]);
 
-    case 'Drink': {
-      const recipe = await infoDrinkRequest({ key: 'recipeId', search: id });
-      setRecipeInProgressInfo(recipe.drinks[0]);
-    }
-      break;
-
-    default:
-      break;
-    }
+  const requestRecipes = async () => {
+    const recipe = await fetchRecipe(page)({ key: 'recipeId', search: id });
+    setRecipeInProgressInfo(recipe[0]);
   };
 
   useEffect(() => {
-    fetchRecipe();
+    requestRecipes();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -106,12 +95,12 @@ function RecipeInProgress({ match: { url, params: { id } } }) {
   return (
     <div>
       <img
-        src={ recipeInProgressInfo[`str${actualPage}Thumb`] }
+        src={ recipeInProgressInfo[thumb] }
         alt="recipe"
         data-testid="recipe-photo"
       />
-      <p data-testid="recipe-title">{ recipeInProgressInfo[`str${actualPage}`] }</p>
-      <ShareButton url={ `http://localhost:3000/${actualPage.toLowerCase()}s/${id}` } />
+      <p data-testid="recipe-title">{ recipeInProgressInfo[page] }</p>
+      <ShareButton url={ `http://localhost:3000/${page}/${id}` } />
       <FavoriteButton
         recipe={ recipeInProgressInfo }
         recipeId={ id }

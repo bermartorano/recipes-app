@@ -15,7 +15,7 @@ function Header({ title, hasSearchIcon }) {
 
   return (
     <div>
-      { showSearchBar && <SearchBar titleToFetch={ title } />}
+      { showSearchBar && <SearchBar />}
       <Link to="/profile">
         <img src={ profileIcon } alt="drink-page" data-testid="profile-top-btn" />
       </Link>
