@@ -12,6 +12,8 @@ import Drinks from '../pages/Drinks';
 describe('Sequência de testes relacionadas à renderização de elementos da página <drinks />', () => {
   beforeEach(() => { global.fetch = jest.fn(fetchMock); renderWith(<Drinks />, ['/drinks']); });
 
+  afterEach(() => { jest.clearAllMocks(); });
+
   test('Verifica se os elementos html do componente <Header /> são renderizados na página', () => {
     const headerElements = [
       screen.getByTestId(/^profile-top-btn$/),
@@ -117,10 +119,9 @@ describe('Verifica funcionalidades de roteamento dos componentes da página <dri
 
   test('Verifica se ao clicar em algum dos cards da página de receitas o usuário é redirecionado para a rota correta', async () => {
     const { history } = renderWith(<Drinks />, ['/drinks']);
-    await waitFor(() => {
-      const cardElement = screen.queryByTestId('4-recipe-card');
-      userEvent.click(cardElement);
-    });
+
+    const cardElement = await screen.findByTestId('4-recipe-card');
+    userEvent.click(cardElement);
 
     await waitFor(() => { expect(history.location.pathname).toBe('/drinks/13938'); });
   });

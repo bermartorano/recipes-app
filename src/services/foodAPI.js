@@ -22,7 +22,3 @@ export async function infoFoodRequest({ key, search } = { key: 'name', search: '
     return error;
   }
 }
-
-// export function foodUrlImg(ingredient) {
-//   return `https://www.themealdb.com/images/ingredients/${ingredient}-Small.png`;
-// }

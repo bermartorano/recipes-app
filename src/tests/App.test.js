@@ -7,14 +7,9 @@ import fetchMock from './mock/fetchMock';
 import App from '../App';
 
 describe('Sequência de testes relacionadas à página <App />', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn(fetchMock);
-  });
+  beforeEach(() => { global.fetch = jest.fn(fetchMock); });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  afterEach(() => { jest.clearAllMocks(); });
 
   test('Verifica se a rota inicial é para o componente login ao inicializar a página', () => {
     // Renderizar a página que o componente se encontra

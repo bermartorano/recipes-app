@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react';
 
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 import { renderWith } from './helpers/renderWith';
 
@@ -10,14 +9,9 @@ import { fetchMock } from './mock/fetchMock';
 import App from '../App';
 
 describe('Sequência de testes relacionadas à página <Header />', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch');
-    global.fetch = jest.fn(fetchMock);
-  });
+  beforeEach(() => { global.fetch = jest.fn(fetchMock); });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  afterEach(() => { jest.clearAllMocks(); });
 
   test('Verifica a funcionalidade do botão searchIcon', async () => {
     renderWith(<App />);
@@ -26,11 +20,9 @@ describe('Sequência de testes relacionadas à página <Header />', () => {
     const password = screen.getByTestId('password-input');
     const button = screen.getByTestId('login-submit-btn');
 
-    act(() => {
-      userEvent.type(email, 'trybe@test.com');
-      userEvent.type(password, '1234567');
-      userEvent.click(button);
-    });
+    userEvent.type(email, 'trybe@test.com');
+    userEvent.type(password, '1234567');
+    userEvent.click(button);
 
     const searchButton = screen.getByRole('presentation');
 

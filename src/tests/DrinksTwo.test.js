@@ -12,11 +12,7 @@ import Drinks from '../pages/Drinks';
 const className = '.card-recipe';
 
 describe('Sequência de testes relacionadas à interação do usuário com a página <Meals />, e consulta à API', () => {
-  beforeEach(() => {
-    jest.spyOn(global, 'fetch'); global.fetch = jest.fn(fetchMock);
-
-    renderWith(<Drinks />, ['/drinks']); openSearchBar();
-  });
+  beforeEach(() => { jest.spyOn(global, 'fetch'); global.fetch = jest.fn(fetchMock); renderWith(<Drinks />, ['/drinks']); openSearchBar(); });
 
   afterEach(() => { jest.clearAllMocks(); });
 
@@ -48,7 +44,9 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
 
   test('Verifica é emitido um alerta quando o campo não é preenchidos corretamente', async () => {
     jest.spyOn(window, 'alert');
+
     searchOnSearchBar('mais de uma letra', /^first-letter-search-radio$/);
+
     expect(alert).toHaveBeenCalled();
     expect(alert).toHaveBeenCalledTimes(1);
 

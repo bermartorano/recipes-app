@@ -1,5 +1,4 @@
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 import { renderWith } from './helpers/renderWith';
 import { captureLoginScreenElements, fillLoginInputs } from './helpers/interactionHelpers';
@@ -15,9 +14,7 @@ describe('Testa o componente <Login />', () => {
     global.fetch = jest.fn(fetchMock);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  afterEach(() => { jest.clearAllMocks(); });
 
   test('Verifica se existem todos os componentes html esperados na tela de login', () => {
     renderWith(<Login />);
@@ -74,9 +71,7 @@ describe('Testa o componente <Login />', () => {
 
     const { button } = captureLoginScreenElements();
 
-    act(() => {
-      userEvent.click(button);
-    });
+    userEvent.click(button);
 
     expect(history.location.pathname).toBe('/meals');
     expect(JSON.parse(localStorage.getItem('user'))).toEqual({ email: 'valide.emaila@valid.com' });

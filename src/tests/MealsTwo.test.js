@@ -14,7 +14,6 @@ const className = '.card-recipe';
 describe('Sequência de testes relacionadas à interação do usuário com a página <Meals />, e consulta à API', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch'); global.fetch = jest.fn(fetchMock);
-
     renderWith(<Meals />, ['/meals']); openSearchBar();
   });
 
@@ -48,7 +47,9 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
 
   test('Verifica é emitido um alerta quando o campo não é preenchidos corretamente', async () => {
     jest.spyOn(window, 'alert');
+
     searchOnSearchBar('mais de uma letra', /^first-letter-search-radio$/);
+
     expect(alert).toHaveBeenCalled();
     expect(alert).toHaveBeenCalledTimes(1);
 
@@ -132,7 +133,9 @@ describe('Sequência de testes relacionadas à interação do usuário com a pá
 
   test('Verifica se ao clicar na categoria All todos os elementos voltam a ser exibidos na tela', async () => {
     await clickOnCategory();
+
     userEvent.click(await screen.findByTestId(/^All-category-filter$/));
+
     await waitFor(() => {
       expect(document.querySelectorAll(className)).toHaveLength(12);
       expect(screen.queryByTestId(/^All-category-filter$/)).toBeChecked();

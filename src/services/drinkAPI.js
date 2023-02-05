@@ -22,7 +22,3 @@ export async function infoDrinkRequest({ key, search } = { key: 'name', search: 
     return error;
   }
 }
-
-export function drinkUrlImg(ingredient) {
-  return `https://www.thecocktaildb.com/images/ingredients/${ingredient}-Small.png`;
-}
