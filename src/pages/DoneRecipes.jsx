@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header, DoneRecipeCard } from '../services/componentsExport';
+// APENAS PARA O COMMIT
 
 function DoneRecipes() {
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
