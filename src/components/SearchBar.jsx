@@ -1,73 +1,49 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { infoFoodRequest } from '../services/foodAPI';
-import { infoDrinkRequest } from '../services/drinkAPI';
-import { RecipesContext } from '../context/RecipesProvider';
 
-export default function SearchBar(props) {
-  const { titleToFetch } = props;
-  const { setRecipes, recipes } = useContext(RecipesContext);
+import { RecipesContext } from '../context/RecipesProvider';
+import { fetchRecipe, pageChecker, pageReferences } from '../services/helperCorrectPage';
+
+export default function SearchBar() {
+  const { recipes, setRecipes } = useContext(RecipesContext);
   const [searchInfo, setSearchInfo] = useState({
     searchBarInput: '',
     searchFilter: '',
   });
+
   const history = useHistory();
 
-  const handleChange = ({ target }) => {
-    const { value, name } = target;
-    setSearchInfo({
-      ...searchInfo,
-      [name]: value,
-    });
+  const { page, id } = pageReferences(pageChecker(history.location.pathname)[0]);
+
+  const handleChange = ({ target: { value, name } }) => {
+    setSearchInfo({ ...searchInfo, [name]: value });
   };
 
   useEffect(() => {
-    const sliceLimit = -1;
-    const pageName = `${titleToFetch.toLowerCase()}`;
-    const titleToFetchWithoutLastCharacter = titleToFetch.slice(0, sliceLimit);
-    const { [pageName]: recipesKey } = recipes;
-    const [recipe] = recipesKey;
-    if (recipesKey.length === 1) {
-      history.push(`/${pageName}/${recipe[`id${titleToFetchWithoutLastCharacter}`]}`);
+    if (recipes[page].length === 1) {
+      console.log(recipes[page]);
+      history.push(`/${page}/${recipes[page][0][id]}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipes]);
 
   const handleClick = async () => {
     const { searchBarInput, searchFilter } = searchInfo;
-    if (searchFilter === 'firstLetter' && searchBarInput.length > 1) {
-      alert('Your search must have only 1 (one) character');
-    }
-    switch (titleToFetch) {
-    case 'Meals': {
-      const mealsFetched = await infoFoodRequest({
-        key: searchFilter,
-        search: searchBarInput,
-      });
-      if (!mealsFetched.meals) {
-        alert('Sorry, we haven\'t found any recipes for these filters.');
-        break;
-      }
-      setRecipes(mealsFetched);
-    }
-      break;
 
-    case 'Drinks': {
-      const drinksFetched = await infoDrinkRequest({
-        key: searchFilter,
-        search: searchBarInput,
-      });
-      if (!drinksFetched.drinks) {
-        alert('Sorry, we haven\'t found any recipes for these filters.');
-        break;
-      }
-      setRecipes(drinksFetched);
+    if (searchFilter === 'firstLetter' && searchBarInput.length > 1) {
+      // eslint-disable-next-line no-alert
+      return alert('Your search must have only 1 (one) character');
     }
-      break;
-    default:
-      break;
+
+    const recipeFetch = await fetchRecipe(page)({
+      key: searchFilter,
+      search: searchBarInput });
+
+    if (!recipeFetch) {
+      // eslint-disable-next-line no-alert
+      return alert('Sorry, we haven\'t found any recipes for these filters.');
     }
+    setRecipes({ ...recipes, [page]: [...recipeFetch] });
   };
 
   return (
@@ -115,7 +91,3 @@ export default function SearchBar(props) {
     </div>
   );
 }
-
-SearchBar.propTypes = {
-  titleToFetch: PropTypes.string.isRequired,
-};

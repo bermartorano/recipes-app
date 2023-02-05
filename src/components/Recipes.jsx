@@ -1,120 +1,98 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { RecipesContext } from '../context/RecipesProvider';
-import RecipeCard from './RecipeCard';
-import { infoFoodRequest } from '../services/foodAPI';
-import { infoDrinkRequest } from '../services/drinkAPI';
 
-function Recipes(props) {
-  const { pageSubject } = props;
+import { RecipesContext } from '../context/RecipesProvider';
+
+import RecipeCard from './RecipeCard';
+
+import { fetchRecipe, pageChecker, pageReferences } from '../services/helperCorrectPage';
+
+function Recipes({ pageSubject }) {
   const { recipes, setRecipes } = useContext(RecipesContext);
-  const history = useHistory();
+  const [switchSelected, setSwitchButton] = useState('all');
+
   const [categories, setCategories] = useState([]);
-  const [categoryFilterOn, setCategoryFilterOn] = useState(false);
-  const recipesKeyText = `${pageSubject.toLowerCase()}s`;
-  const { [recipesKeyText]: recipesKey } = recipes;
+
+  const { page, id, title, thumb } = pageReferences(pageChecker(pageSubject)[0]);
+
   const maxRecipesToRender = 12;
   const maxCategoriesToRender = 5;
-  const recipesToRender = recipesKey.slice(0, maxRecipesToRender);
+  const recipesToRender = recipes[page].slice(0, maxRecipesToRender);
 
   const initialRecipes = async () => {
-    switch (pageSubject) {
-    case 'Meal': {
-      const initialMealsFetched = await infoFoodRequest({ key: 'name', search: '' });
-      const categoriesFetch = await infoFoodRequest({ key: 'categories', search: '' });
-      const categoriesArray = [...categoriesFetch.meals];
-      setCategories(categoriesArray);
-      setRecipes(initialMealsFetched);
-      break;
-    }
+    const initialRecipesFetched = await fetchRecipe(page)();
+    setRecipes({ ...recipes, [page]: [...initialRecipesFetched] });
+  };
 
-    case 'Drink': {
-      const inicialDrinksFetched = await infoDrinkRequest({ key: 'name', search: '' });
-      const categoriesFetch = await infoDrinkRequest({ key: 'categories', search: '' });
-      const categoriesArray = [...categoriesFetch.drinks];
-      setCategories(categoriesArray);
-      setRecipes(inicialDrinksFetched);
-    }
-      break;
-    default:
-    }
+  const initialCategories = async () => {
+    const categoriesFetch = await fetchRecipe(page)({ key: 'categories', search: '' });
+    setCategories(categoriesFetch);
   };
 
   useEffect(() => {
     initialRecipes();
+    initialCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCategoryClick = async ({ target }) => {
-    const { innerText } = target;
+    const { value } = target;
 
-    if (categoryFilterOn) {
-      initialRecipes();
-      setCategoryFilterOn(false);
-    } else {
-      setCategoryFilterOn(true);
-      switch (pageSubject) {
-      case 'Meal': {
-        const recipesByCategory = await infoFoodRequest({
-          key: 'categoryFilter', search: innerText });
-        setRecipes(recipesByCategory);
-      }
-        break;
-
-      case 'Drink': {
-        const recipesByCategory = await infoDrinkRequest({
-          key: 'categoryFilter', search: innerText });
-        console.log(recipesByCategory);
-        setRecipes(recipesByCategory);
-      }
-        break;
-      default:
-      }
+    if (switchSelected === value) {
+      setSwitchButton('all');
+      return initialRecipes();
     }
+    setSwitchButton(value);
+
+    const recipesByCategory = await fetchRecipe(page)({
+      key: 'categoryFilter', search: value });
+    setRecipes({ ...recipes, [page]: [...recipesByCategory] });
   };
 
-  const handleClearFilters = async () => {
+  function handleClearFilters() {
+    setSwitchButton('all');
     initialRecipes();
-  };
-
-  const handleCardClick = (id) => {
-    const pageTitle = `${pageSubject.toLowerCase()}s`;
-    history.push(`/${pageTitle}/${id}`);
-  };
+  }
 
   return (
     <div>
       <div>
-        {categories.slice(0, maxCategoriesToRender).map((cat, index) => (
-          <button
-            type="button"
-            key={ index }
-            data-testid={ `${cat.strCategory}-category-filter` }
-            onClick={ handleCategoryClick }
-          >
-            {`${cat.strCategory}`}
-          </button>
+        {categories.slice(0, maxCategoriesToRender).map(({ strCategory }, index) => (
+          <label htmlFor={ `switch-${index}` } key={ index }>
+            <input
+              type="checkbox"
+              id={ `switch-${index}` }
+              data-testid={ `${strCategory}-category-filter` }
+              onChange={ handleCategoryClick }
+              value={ strCategory }
+              checked={ switchSelected === strCategory }
+            />
+            {`${strCategory}`}
+          </label>
         ))}
-        <button
-          type="button"
-          data-testid="All-category-filter"
-          onClick={ handleClearFilters }
-        >
+        <label htmlFor="all-categories-recipes">
+          <input
+            type="checkbox"
+            data-testid="All-category-filter"
+            onClick={ handleClearFilters }
+            value="all"
+            name="all-categories-recipes"
+            onChange={ handleClearFilters }
+            checked={ switchSelected === 'all' }
+          />
           All
-        </button>
+        </label>
       </div>
       {recipesToRender.map((rec, index) => (
         <div
-          role="presentation"
+          className="card-recipe"
           key={ index }
-          onClick={ () => handleCardClick(rec[`id${pageSubject}`]) }
-          onKeyDown={ () => handleCardClick(rec[`id${pageSubject}`]) }
         >
           <RecipeCard
             index={ index }
-            recipeName={ rec[`str${pageSubject}`] }
-            imgSrc={ rec[`str${pageSubject}Thumb`] }
+            recipeName={ rec[title] }
+            imgSrc={ rec[thumb] }
+            url={ `/${page}/${rec[id]}` }
           />
         </div>
       ))}

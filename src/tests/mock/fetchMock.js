@@ -1,12 +1,15 @@
 import { DRINKS, FILTERED_BY_NAME_DRINKS, FILTERED_BY_LETTER_DRINKS,
-  FILTERED_BY_INGREDIENT_DRINKS, INGREDIENTS_DRINKS_IDS, ALL_CATEGORIES_DRINKS } from './mockDrinkAPI';
+  FILTERED_BY_INGREDIENT_DRINKS, INGREDIENTS_DRINKS_IDS,
+  ALL_CATEGORIES_DRINKS, FILTERED_BY_CATEGORY_DRINKS } from './mockDrinkAPI';
 
 import { FILTERED_BY_INGREDIENT_FOODS, FILTERED_BY_LETTER_FOODS,
-  FILTERED_BY_NAME_FOODS, INGREDIENTS_FOODS_IDS, ALL_CATEGORIES_FOODS, FOODS } from './mockFoodAPI';
+  FILTERED_BY_NAME_FOODS, INGREDIENTS_FOODS_IDS,
+  ALL_CATEGORIES_FOODS, FOODS, FILTERED_BY_CATEGORY_FOODS } from './mockFoodAPI';
 
-function verifyKey(url, checkerObject) {
+function verifyKey(defaultUrl, receivedUrl, checkerObject) {
   const key = Object.keys(checkerObject)
-    .find((keyNumber) => `${url}${keyNumber}` === url);
+    .find((keyNumber) => `${defaultUrl}${keyNumber}` === receivedUrl);
+  console.log(key);
   return INGREDIENTS_DRINKS_IDS[key];
 }
 
@@ -27,25 +30,30 @@ function urlChecker(url) {
   case url === `${defaultUrl.food}list.php?c=list`:
     return ALL_CATEGORIES_FOODS;
 
-  case url.starsWith(`${defaultUrl.drink}lookup.php?i=`):
-    return verifyKey(url, INGREDIENTS_DRINKS_IDS);
-  case url.starsWith(`${defaultUrl.food}lookup.php?i=`):
-    return verifyKey(url, INGREDIENTS_FOODS_IDS);
+  case url.startsWith(`${defaultUrl.drink}lookup.php?i=`):
+    return verifyKey(`${defaultUrl.drink}lookup.php?i=`, url, INGREDIENTS_DRINKS_IDS);
+  case url.startsWith(`${defaultUrl.food}lookup.php?i=`):
+    return verifyKey(`${defaultUrl.food}lookup.php?i=`, url, INGREDIENTS_FOODS_IDS);
 
-  case url.starsWith(`${defaultUrl.drink}filter.php?i=`):
+  case url.startsWith(`${defaultUrl.drink}filter.php?i=`):
     return FILTERED_BY_INGREDIENT_DRINKS;
-  case url.starsWith(`${defaultUrl.food}filter.php?i=`):
+  case url.startsWith(`${defaultUrl.food}filter.php?i=`):
     return FILTERED_BY_INGREDIENT_FOODS;
 
-  case url.starsWith(`${defaultUrl.drink}search.php?s=`):
+  case url.startsWith(`${defaultUrl.drink}search.php?s=`):
     return FILTERED_BY_NAME_DRINKS;
-  case url.starsWith(`${defaultUrl.food}search.php?s=`):
+  case url.startsWith(`${defaultUrl.food}search.php?s=`):
     return FILTERED_BY_NAME_FOODS;
 
-  case url.starsWith(`${defaultUrl.food}search.php?f=`):
+  case url.startsWith(`${defaultUrl.food}search.php?f=`):
     return FILTERED_BY_LETTER_FOODS;
-  case url.starsWith(`${defaultUrl.drink}search.php?f=`):
+  case url.startsWith(`${defaultUrl.drink}search.php?f=`):
     return FILTERED_BY_LETTER_DRINKS;
+
+  case url.startsWith(`${defaultUrl.food}filter.php?c=`):
+    return FILTERED_BY_CATEGORY_FOODS;
+  case url.startsWith(`${defaultUrl.drink}filter.php?c=`):
+    return FILTERED_BY_CATEGORY_DRINKS;
 
   default:
     return { error: 'invalid URL ' };

@@ -1,13 +1,26 @@
-import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/react';
+
 import userEvent from '@testing-library/user-event';
-import { renderWithRouter } from './helpers/renderWithRouter';
+import { act } from 'react-dom/test-utils';
+
+import { renderWith } from './helpers/renderWith';
+
+import { fetchMock } from './mock/fetchMock';
+
 import App from '../App';
 
 describe('Sequência de testes relacionadas à página <SearchBar />', () => {
-  test('Ferifica a funcionalidade dos botões inputRadio', async () => {
-    renderWithRouter(<App />);
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch');
+    global.fetch = jest.fn(fetchMock);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('Verifica a funcionalidade dos botões inputRadio', async () => {
+    renderWith(<App />);
 
     const email = screen.getByTestId('email-input');
     const password = screen.getByTestId('password-input');

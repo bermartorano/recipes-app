@@ -870,59 +870,6 @@ export const FILTERED_BY_LETTER_DRINKS = {
       strCreativeCommonsConfirmed: 'No',
       dateModified: '2017-09-02 18:53:31',
     },
-    {
-      idDrink: '12728',
-      strDrink: 'Yoghurt Cooler',
-      strDrinkAlternate: null,
-      strTags: null,
-      strVideo: null,
-      strCategory: 'Other / Unknown',
-      strIBA: null,
-      strAlcoholic: 'Non alcoholic',
-      strGlass: HIGHBALL_GLASS,
-      strInstructions: 'Place all ingredients in the blender jar - cover and whiz on medium speed until well blended. Pour in one tall, 2 medium or 3 small glasses and drink up. Note: Use lots of ice in this one - great on hot days! To add ice: Remove the center of the cover while the blender is on - drop 3 or 4 ice cubs and blend until they`re completely crushed.',
-      strInstructionsES: null,
-      strInstructionsDE: 'Alle Zutaten in den Mixer geben - abdecken und bei mittlerer Geschwindigkeit schaumig schlagen, bis sie gut vermischt sind. In ein groees, 2 mittlere oder 3 kleine Gleser fullen und geniessen. Hinweis: Verwenden Sie viel Eis in diesem Geret - ideal an heiuen Tagen! Um Eis hinzuzufugen: Entfernen Sie die Mitte der Abdeckung, wuhrend der Mixer eingeschaltet ist - lassen Sie 3 oder 4 Eiswurfel fallen und mischen Sie sie, bis sie vollstundig zerkleinert sind.',
-      strInstructionsFR: null,
-      strInstructionsIT: 'Mettere tutti gli ingredienti nella caraffa del frullatore - coprire e montare a velociti media fino a quando non sono ben amalgamati.Nota: usa molto ghiaccio in questo - ottimo nelle giornate calde!Versare in un bicchiere alto, 2 medi o 3 piccoli e bere.Per aggiungere il ghiaccio: rimuovere il centro del coperchio mentre il frullatore a acceso - far cadere 3 o 4 cubetti di ghiaccio e frullare fino a quando non saranno completamente schiacciati.',
-      'strInstructionsZH-HANS': null,
-      'strInstructionsZH-HANT': null,
-      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/trttrv1441254466.jpg',
-      strIngredient1: 'Yoghurt',
-      strIngredient2: 'Fruit',
-      strIngredient3: 'Ice',
-      strIngredient4: null,
-      strIngredient5: null,
-      strIngredient6: null,
-      strIngredient7: null,
-      strIngredient8: null,
-      strIngredient9: null,
-      strIngredient10: null,
-      strIngredient11: null,
-      strIngredient12: null,
-      strIngredient13: null,
-      strIngredient14: null,
-      strIngredient15: null,
-      strMeasure1: '1 cup ',
-      strMeasure2: '1 cup ',
-      strMeasure3: null,
-      strMeasure4: null,
-      strMeasure5: null,
-      strMeasure6: null,
-      strMeasure7: null,
-      strMeasure8: null,
-      strMeasure9: null,
-      strMeasure10: null,
-      strMeasure11: null,
-      strMeasure12: null,
-      strMeasure13: null,
-      strMeasure14: null,
-      strMeasure15: null,
-      strImageSource: null,
-      strImageAttribution: null,
-      strCreativeCommonsConfirmed: 'No',
-      dateModified: '2015-09-03 05:27:46',
-    },
   ],
 };
 
@@ -953,6 +900,57 @@ export const FILTERED_BY_INGREDIENT_DRINKS = {
       strDrink: 'Zorro',
       strDrinkThumb: THUMB_URL,
       idDrink: '15328',
+    },
+  ],
+};
+
+// Busca realizada pela categoria Cocoa
+export const FILTERED_BY_CATEGORY_DRINKS = {
+  drinks: [
+    {
+      strDrink: 'Castillian Hot Chocolate',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/3nbu4a1487603196.jpg',
+      idDrink: '12730',
+    },
+    {
+      strDrink: 'Chocolate Beverage',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/jbqrhv1487603186.jpg',
+      idDrink: '12732',
+    },
+    {
+      strDrink: 'Chocolate Drink',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/q7w4xu1487603180.jpg',
+      idDrink: '12734',
+    },
+    {
+      strDrink: 'Drinking Chocolate',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/u6jrdf1487603173.jpg',
+      idDrink: '12736',
+    },
+    {
+      strDrink: 'Hot Chocolate to Die for',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/0lrmjp1487603166.jpg',
+      idDrink: '12738',
+    },
+    {
+      strDrink: 'Microwave Hot Cocoa',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/8y4x5f1487603151.jpg',
+      idDrink: '12744',
+    },
+    {
+      strDrink: 'Nuked Hot Chocolate',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/xcu6nb1487603142.jpg',
+      idDrink: '12746',
+    },
+    {
+      strDrink: 'Orange Scented Hot Chocolate',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/hdzwrh1487603131.jpg',
+      idDrink: '12748',
+    },
+    {
+      strDrink: 'Spanish chocolate',
+      strDrinkThumb: 'https://www.thecocktaildb.com/images/media/drink/pra8vt1487603054.jpg',
+      idDrink: '12750',
     },
   ],
 };
@@ -993,14 +991,6 @@ export const ALL_CATEGORIES_DRINKS = {
       strCategory: 'Soft Drink',
     },
   ],
-};
-
-export const OPTIONS_DRINK_API = {
-  all: DRINKS,
-  name: FILTERED_BY_NAME_DRINKS,
-  firstLetter: FILTERED_BY_LETTER_DRINKS,
-  ingredients: FILTERED_BY_INGREDIENT_DRINKS,
-  categories: ALL_CATEGORIES_DRINKS,
 };
 
 export const ID_14560 = {
@@ -1300,4 +1290,6 @@ export const INGREDIENTS_DRINKS_IDS = {
   17193: ID_17193,
   14842: ID_14842,
   15328: ID_15328,
+  17219: FILTERED_BY_LETTER_DRINKS,
+  13938: { drinks: [DRINKS.drinks[4]] },
 };

@@ -1,4 +1,4 @@
-function urlFoodConstructor({ key, search } = { key: 'name', search: '' }) {
+function urlFoodConstructor({ key, search }) {
   const baseUrl = 'https://www.themealdb.com/api/json/v1/1/';
 
   const urlConstructor = {
@@ -13,7 +13,7 @@ function urlFoodConstructor({ key, search } = { key: 'name', search: '' }) {
   return urlConstructor[key];
 }
 
-export async function infoFoodRequest({ key, search }) {
+export async function infoFoodRequest({ key, search } = { key: 'name', search: '' }) {
   try {
     const data = await fetch(urlFoodConstructor({ key, search }));
     const results = await data.json();
@@ -21,8 +21,4 @@ export async function infoFoodRequest({ key, search }) {
   } catch (error) {
     return error;
   }
-}
-
-export function foodUrlImg(ingredient) {
-  return `https://www.themealdb.com/images/ingredients/${ingredient}-Small.png`;
 }
