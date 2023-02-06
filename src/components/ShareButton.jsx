@@ -12,7 +12,6 @@ export default function ShareButton({ url, index }) {
     setItIsCopied(!itIsCopied);
   };
 
-  // Link copied!
   return (
     <button
       type="button"
