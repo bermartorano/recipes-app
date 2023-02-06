@@ -3,7 +3,10 @@ import { Header, DoneRecipeCard } from '../services/componentsExport';
 
 function DoneRecipes() {
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
-  const [recipesToRender, setRecipesToRender] = useState(doneRecipes);
+  let initialDoneRecipes = [];
+  if (doneRecipes) initialDoneRecipes = doneRecipes;
+  const [initialRecipes] = useState(initialDoneRecipes);
+  const [recipesToRender, setRecipesToRender] = useState(initialDoneRecipes);
   const [filterButton, setFilterButton] = useState('clear');
 
   const handleFilterClick = ({ target: { name } }) => {
@@ -12,9 +15,9 @@ function DoneRecipes() {
 
   const filtering = (filter) => {
     const recipesFiltered = {
-      clear: doneRecipes,
-      meal: doneRecipes.filter((recipe) => recipe.type === 'meal'),
-      drink: doneRecipes.filter((recipe) => recipe.type === 'drink'),
+      clear: initialRecipes,
+      meal: initialRecipes.filter((recipe) => recipe.type === 'meal'),
+      drink: initialRecipes.filter((recipe) => recipe.type === 'drink'),
     };
     return recipesFiltered[filter];
   };

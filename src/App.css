@@ -56,3 +56,7 @@
 .checkbox-done {
   text-decoration: line-through solid black;
 }
+
+img {
+  max-width: 200px;
+}
