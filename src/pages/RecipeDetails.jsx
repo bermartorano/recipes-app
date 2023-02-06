@@ -18,7 +18,6 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
     async function fetchReturn() {
       const recipeToRender = await fetchRecipe(page)({
         key: 'recipeId', search: id });
-      console.log(recipeToRender);
       setRecipe(recipeToRender[0]);
     }
 
