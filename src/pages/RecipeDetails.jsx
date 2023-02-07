@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import DetailsButton from '../components/DatailsButton';
+import ShareButton from '../components/ShareButton';
+import FavoriteButton from '../components/FavoriteButton';
 
 import { RecipesContext } from '../context/RecipesProvider';
 
@@ -81,6 +84,9 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
           picture-in-picture;
           web-share"
       />
+      <DetailsButton />
+      <ShareButton />
+      <FavoriteButton />
     </main>
   );
 }
