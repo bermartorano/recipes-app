@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DetailsButton from '../components/DatailsButton';
 import ShareButton from '../components/ShareButton';

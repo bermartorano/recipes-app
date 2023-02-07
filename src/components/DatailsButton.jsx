@@ -34,7 +34,7 @@ function DetailsButton() {
     <button
       data-testid="start-recipe-btn"
       onClick={ handleClick }
-      style={ { position: 'flex', bottom: 60 } }
+      style={ { position: 'flex', bottom: 0 } }
     >
       {text}
     </button>
