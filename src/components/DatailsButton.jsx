@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import '../DetailsButton.css';
 
 function DetailsButton() {
   const history = useHistory();
@@ -33,6 +32,7 @@ function DetailsButton() {
 
   return show ? (
     <button
+      style={ { position: 'static', bottom: 0 } }
       className="start-recipe-btn"
       data-testid="start-recipe-btn"
       onClick={ handleClick }
