@@ -4,20 +4,17 @@ import { useLocation, useHistory } from 'react-router-dom';
 function DetailsButton() {
   const history = useHistory();
   const [text, setText] = useState('Start Recipe');
-  const [show, setShow] = useState(true);
+  const [show] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
-    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
     const id = location.pathname.split('/').pop();
 
-    if (doneRecipes.includes(id)) {
-      setShow(false);
-    } else if (inProgressRecipes.includes(id)) {
+    if (inProgressRecipes.includes(id)) {
       setText('Continue Recipe');
     }
-  }, [location]);
+  }, [location.pathname]);
 
   const handleClick = () => {
     const id = location.pathname.split('/').pop();
