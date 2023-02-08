@@ -32,7 +32,7 @@ function DetailsButton() {
 
   return show ? (
     <button
-      style={ { position: 'static', bottom: 0 } }
+      style={ { position: 'fixed', bottom: 0 } }
       className="start-recipe-btn"
       data-testid="start-recipe-btn"
       onClick={ handleClick }
