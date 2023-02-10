@@ -14,13 +14,15 @@ function DetailsButton() {
     if (inProgressRecipes.includes(id)) {
       setText('Continue Recipe');
     }
-  }, [location.pathname]);
+  }, [location]);
 
   const handleClick = () => {
     const id = location.pathname.split('/').pop();
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
-    inProgressRecipes.push(id);
-    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    if (!inProgressRecipes.includes(id)) {
+      inProgressRecipes.push(id);
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    }
 
     let path = location.pathname;
     path = path.includes('/drinks/') ? '/drinks/' : '/meals/';
