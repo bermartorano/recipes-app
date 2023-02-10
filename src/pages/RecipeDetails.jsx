@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DetailsButton from '../components/DatailsButton';
+import ShareButton from '../components/ShareButton';
+import FavoriteButton from '../components/FavoriteButton';
 
 import { RecipesContext } from '../context/RecipesProvider';
 
@@ -11,7 +13,7 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
 
   const [recipe, setRecipe] = useState({});
 
-  const { page, thumb, title } = pageReferences(actualPage[0]);
+  const { page, thumb, title, pageTitleOnSingular } = pageReferences(actualPage[0]);
 
   const { recipes: { [page]: recipesArray } } = useContext(RecipesContext);
 
@@ -67,6 +69,12 @@ export default function RecipeDetails({ match: { url, params: { id } } }) {
       <ol>
         { ingredientes }
       </ol>
+      <ShareButton index={ 0 } url={ `http://localhost:3000${url}` } />
+      <FavoriteButton
+        recipe={ recipe }
+        mealOrDrink={ pageTitleOnSingular }
+        recipeId={ id }
+      />
       <iframe
         data-testid="video"
         width="560"

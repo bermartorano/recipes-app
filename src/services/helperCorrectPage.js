@@ -23,6 +23,7 @@ export function pageReferences(actualPage) {
   const itIsMeal = actualPage === 'meals';
   return {
     pageTitle: (itIsMeal) ? 'Meals' : 'Drinks',
+    pageTitleOnSingular: (itIsMeal) ? 'Meal' : 'Drink',
     page: (itIsMeal) ? 'meals' : 'drinks',
     id: (itIsMeal) ? 'idMeal' : 'idDrink',
     title: (itIsMeal) ? 'strMeal' : 'strDrink',
