@@ -8,6 +8,7 @@ function FavoriteButton(props) {
   const verifyFavorite = (recipeId) => {
     const favRecipesLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
     if (favRecipesLS) {
+      console.log(recipeId);
       const alreadyFav = favRecipesLS.some((rcp) => rcp.id === recipeId);
       return alreadyFav;
     }
@@ -24,7 +25,9 @@ function FavoriteButton(props) {
   };
 
   const handleClick = (recipeToBeConverted, itIsDrinkOrMeal) => {
+    console.log(recipeToBeConverted, itIsDrinkOrMeal);
     const recipeToSave = convertRecipeInfo(recipeToBeConverted, itIsDrinkOrMeal);
+    console.log('recipeToSave: ', recipeToSave);
     delete recipeToSave.tags;
     delete recipeToSave.doneDate;
     const favRecipesLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
